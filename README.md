@@ -8,11 +8,25 @@ I want to segment images by phase-coherence
 I want to achieve it automatically
 
 # Read STM data as python
-`.sxm` data load by `Gwyddion` and saved into `.gwy` format after few preprocessing(correction and leveling.
-`gwyfile`
-# Leveling(Preprocessing)
+`.sxm` data load by `Gwyddion` and saved into `.gwy` format after few preprocessing(correction and leveling.  
+python library `gwyfile` can be installed by `pip`
+# Preprocessing (remove background)
+Additional preprocessing can't be done with `Gwyddion`.  
+here, my data contains a mechanical fluctation effect, I removed it by gaussian substraction
+<img width="1794" height="691" alt="image" src="https://github.com/user-attachments/assets/b761fd9e-b5c2-4edf-a6ec-545a69874755" />
+
 # Find instrinsic periodicity(FFT peak find)
+<img width="303" height="300" alt="image" src="https://github.com/user-attachments/assets/f53da73d-8463-4eae-bd09-5433267f8558" />
+<img width="846" height="836" alt="image" src="https://github.com/user-attachments/assets/a643ac90-e10b-47b7-9542-0526ef66f823" />
+
 # Visualize phase-amplitude(Lawler-Fujita method)
+<img width="1854" height="1258" alt="image" src="https://github.com/user-attachments/assets/accf7fa2-aaec-4832-ba66-d3a82fca1f47" />
+<img width="803" height="805" alt="image" src="https://github.com/user-attachments/assets/39314ad1-940f-450c-a767-be5cf3c8d2cc" />
+
 # Remove extrinsic displcement
 ## Creep motion
+<img width="813" height="890" alt="image" src="https://github.com/user-attachments/assets/105f072d-7b20-4140-8fc8-c17376c92d62" />
+
 ## tip change effect
+<img width="848" height="498" alt="image" src="https://github.com/user-attachments/assets/ea431414-9674-4502-97e9-e203f2e19eca" />
+<img width="1236" height="407" alt="image" src="https://github.com/user-attachments/assets/f83b95c2-fb2c-457f-8d76-d43958a7b1df" />
