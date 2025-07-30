@@ -16,10 +16,17 @@ here, my data contains a mechanical fluctation effect, I removed it by gaussian 
 <img width="1794" height="691" alt="image" src="https://github.com/user-attachments/assets/b761fd9e-b5c2-4edf-a6ec-545a69874755" />
 
 # Find instrinsic periodicity(FFT peak find)
-<img width="303" height="300" alt="image" src="https://github.com/user-attachments/assets/f53da73d-8463-4eae-bd09-5433267f8558" />
+It is easy to find the FFT peaks in cleaned data.
+k1,k2 are enough for algorithm, but considering triangular symmetry and cross-check, I'll define k3( = -k1-k2) too  
+
+<img width="303" height="300" alt="image" src="https://github.com/user-attachments/assets/f53da73d-8463-4eae-bd09-5433267f8558" />   
+
+k1,k2,k3 in real space  
+
 <img width="846" height="836" alt="image" src="https://github.com/user-attachments/assets/a643ac90-e10b-47b7-9542-0526ef66f823" />
 
 # Visualize phase-amplitude(Lawler-Fujita method)
+Lawler-Fujita mehtod
 <img width="1854" height="1258" alt="image" src="https://github.com/user-attachments/assets/accf7fa2-aaec-4832-ba66-d3a82fca1f47" />
 <img width="803" height="805" alt="image" src="https://github.com/user-attachments/assets/39314ad1-940f-450c-a767-be5cf3c8d2cc" />
 
