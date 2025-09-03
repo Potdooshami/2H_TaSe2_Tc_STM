@@ -1,2 +1,16 @@
 phaseAnalysis/
 2Hvenv/
+xx.py
+yy.py
+__pycache__/xx.cpython-312.pyc
+modl/__pycache__/loadgwy.cpython-312.pyc
+modl/loadHeaderTbls.py
+imagingPhase/__pycache__/__init__.cpython-312.pyc
+imagingPhase/__pycache__/load_data.cpython-312.pyc
+modl/loadgwy.py
+pipe/loadHeaderTbls.py
+xx.py
+testModule.ipynb
+2HTaSe2_ap_118K002.gwy
+xx.py
+xx.py
