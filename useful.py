@@ -81,3 +81,13 @@ def plot_result(image, background):
 
     fig.tight_layout()
     return fig,ax
+
+def subtabs(figs):
+    import ipywidgets as widgets
+    from IPython.display import display
+    tabs = widgets.Tab()
+    tabs.children = [widgets.Output() for _ in figs]
+    for i, fig in enumerate(figs):
+        with tabs.children[i]:
+            display(fig)
+    return tabs
