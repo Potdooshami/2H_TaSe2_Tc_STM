@@ -1,1 +1,2 @@
-3+5
+def nestfcn():
+    print("Hello from nested function")
