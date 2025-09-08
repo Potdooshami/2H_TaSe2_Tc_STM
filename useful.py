@@ -2,6 +2,7 @@ def tickoff():
   """
   Remove ticks from the current axes.
   """
+  import matplotlib.pyplot as plt
   ax = plt.gca()
   ax.set_xticks([])
   ax.set_yticks([])
