@@ -100,6 +100,10 @@ def subtabs(figs, titles=None):
             tabs.set_title(i, title)
     return tabs
 
+def subtabFigSr(figsSr):
+    return subtabs(figsSr.to_list(),list(figsSr.index))
+
+
 def subtabSr(arrSr):
     '''
     arrSr: pd.Series of matplotlib.figure.Figure

@@ -48,6 +48,7 @@ def kdisplacementmap(arr,k,sig):
 
 
 
+
 def visxprod(xprod):
   from . import auto_clim
   fig,axs = plt.subplots(2,2,figsize=(10, 10))
@@ -91,11 +92,10 @@ def calculate_unwrapped_phase(arr, k, sigma):
     return unwrap_phase(np.angle(displacement_map))
 
 def phi2Hrecover(arr_cln, ks_Latt,sig):
-
-    angle_restores = [
-    calculate_unwrapped_phase(arr_cln, k_Latt/3, sig) - 
-    calculate_unwrapped_phase(arr_cln, k_Latt, sig) / 3
-    for k_Latt in zip(ks_Latt)    
-    ]
-    return angle_restores
+  angle_restores = [
+  calculate_unwrapped_phase(arr_cln, k_Latt/3, sig) - 
+  calculate_unwrapped_phase(arr_cln, k_Latt, sig) / 3
+  for k_Latt in ks_Latt    
+  ]
+  return angle_restores
 
