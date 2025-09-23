@@ -1,4 +1,5 @@
 import numpy as np
+import matplotlib.pyplot as plt
 ## Divide ##
 def z3z3split(phi1,phi2):
   # phi1 from [0,2pi)
@@ -79,3 +80,114 @@ def phaseInfo2(Phi1,Phi2):
       Z6[i,j,1] = z6[1]
       Z6[i,j,2] = z6[2]
   return BaryHHH,BaryHAC,Z3z3,Z6
+
+
+def vectorized_phaseInfo(Phi1, Phi2):
+    """
+    Vectorized version of phaseInfo2.
+    Processes entire 2D arrays Phi1 and Phi2 without loops.
+    """
+    # 1. z3z3split 로직 벡터화
+    phi1 = Phi1 % (2 * np.pi)
+    phi2 = Phi2 % (2 * np.pi)
+    phi1i = phi1 / (2 * np.pi)
+    phi2i = phi2 / (2 * np.pi)
+
+    # divmod를 floor division(//)과 modulo(%)로 대체
+    z3z31 = phi1i // (1/3)
+    rphi1 = phi1i % (1/3)
+    z3z32 = phi2i // (1/3)
+    rphi2 = phi2i % (1/3)
+
+    # 결과를 마지막 축에 쌓아 (N, M, 2) 형태의 배열 생성
+    Z3z3 = np.stack([z3z31, z3z32], axis=-1).astype(int)
+    rphi12 = np.stack([rphi1 * 3, rphi2 * 3], axis=-1)
+
+    # 2. rlsplit 로직 벡터화
+    # is_close_10은 (N, M) 형태의 boolean 배열
+    is_close_10 = rphi12[..., 0] > rphi12[..., 1]
+    
+    # if문을 np.where로 대체
+    # is_close_10이 True이면 원래 순서, False이면 순서를 바꿈
+    # is_close_10을 (N, M, 1)로 브로드캐스팅하여 rphi12와 연산
+    swapped_rphi12 = rphi12[..., [1, 0]]
+    rphi12_ordered = np.where(is_close_10[..., np.newaxis], rphi12, swapped_rphi12)
+
+    # 행렬 곱셈을 위해 마지막 차원 추가 (N, M, 2) -> (N, M, 2, 1)
+    rphi12_ordered = rphi12_ordered[..., np.newaxis]
+    I_C__B = np.array([[1, -1], [0, 1]]) # (2, 2)
+    # (2, 2) @ (N, M, 2, 1) -> (N, M, 2, 1)
+    rphi12_C = I_C__B @ rphi12_ordered
+
+    v_c1 = rphi12_C[..., 0, 0]
+    v_c2 = rphi12_C[..., 1, 0]
+    
+    # 결과를 마지막 축에 쌓아 (N, M, 3) 형태의 배열 생성
+    baryHHH_foo = np.stack([1 - v_c1 - v_c2, v_c1, v_c2], axis=-1)
+    
+    # 3. sixsplit 로직 벡터화
+    # 정렬을 위해 (N, M, 3) -> (N, M, 3, 1) 형태로 변경
+    baryHHH_foo_reshaped = baryHHH_foo[..., np.newaxis]
+    
+    # argsort와 sort를 axis=2 (3개 요소가 있는 축) 기준으로 수행
+    Z6 = np.argsort(baryHHH_foo_reshaped, axis=2)[..., ::-1, 0].astype(int)
+    p_BarHHH = np.sort(baryHHH_foo_reshaped, axis=2)[..., ::-1, :]
+    
+    p_AffHHH = p_BarHHH[..., 1:, :] # Shape: (N, M, 2, 1)
+    I_AffHAC__AffHHH = np.array([[1, 2], [1, -1]]) # (2, 2)
+    p_AffHAC = I_AffHAC__AffHHH @ p_AffHHH # Shape: (N, M, 2, 1)
+    
+    p_aff_0 = p_AffHAC[..., 0, 0]
+    p_aff_1 = p_AffHAC[..., 1, 0]
+    baryHAC_foo = np.stack([1 - p_aff_0 - p_aff_1, p_aff_0, p_aff_1], axis=-1)
+
+    # 4. Conquer(get_bary*) 로직 벡터화
+    # get_baryHHH
+    BaryHHH = np.zeros(phi1.shape + (4,))
+    BaryHHH[..., 0] = baryHHH_foo[..., 0]
+    BaryHHH[..., 3] = baryHHH_foo[..., 2]
+    # np.where를 사용하여 조건에 따라 값을 할당
+    BaryHHH[..., 1] = np.where(is_close_10, baryHHH_foo[..., 1], 0)
+    BaryHHH[..., 2] = np.where(~is_close_10, baryHHH_foo[..., 1], 0)
+
+    # get_baryHAC
+    swapped_baryHAC = baryHAC_foo[..., [0, 2, 1]]
+    BaryHAC = np.where(is_close_10[..., np.newaxis], baryHAC_foo, swapped_baryHAC)
+
+    return BaryHHH, BaryHAC, Z3z3, Z6
+
+class phiPrinter():
+    def __init__(self,phase):
+        self.phase = phase
+        print('phase uploaded')
+        self.Info = vectorized_phaseInfo(self.Phi1, self.Phi2)
+        print('phase calculated')
+    @property
+    def Phi1(self):      
+      return self.phase[0]
+    @property
+    def Phi2(self):
+      return - self.phase[1]
+    @property
+    def BaryHHH(self):
+      return self.Info[0]
+    @property
+    def BaryHAC(self):
+      return self.Info[1]
+    @property
+    def Z3z3(self):
+      return self.Info[2]
+    @property
+    def Z6(self):
+      return self.Info[3]
+    def pHAC(self):
+      HAC_argmax = np.argmax(self.BaryHAC, axis=2)
+    #   fig = plt.figure(figsize=(20,20))
+      ax = plt.imshow(HAC_argmax,cmap='gray')
+      return ax
+    
+
+    
+
+      
+    
