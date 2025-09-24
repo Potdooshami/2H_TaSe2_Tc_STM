@@ -1,9 +1,13 @@
-def tickoff():
+import matplotlib.pyplot as plt
+
+def tickoff(ax = None):
   """
   Remove ticks from the current axes.
   """
-  import matplotlib.pyplot as plt
-  ax = plt.gca()
+    
+  if ax is None:
+    ax = plt.gca()
+  
   ax.set_xticks([])
   ax.set_yticks([])
 
