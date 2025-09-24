@@ -127,4 +127,60 @@ def subtabSr(arrSr):
     titles = arrSr.index.to_list()
     tabs = subtabs(figs,titles)
     return tabs
+
+
+
+from matplotlib.colors import Normalize
+from matplotlib.cm import get_cmap
+import numpy as np
+def color_histogram(arr, clim=None, nbins=200, cmap='gray',ax = None):
+    """
+    1D 배열 데이터에 대한 컬러 히스토그램을 생성하고 표시합니다.
+
+    Args:
+        arr (np.ndarray): 입력 1차원 NumPy 배열.
+        clim (tuple, optional): 컬러맵의 범위를 지정하는 (최소, 최대) 튜플.
+                                 기본값은 배열의 최소값과 최대값입니다.
+        nbins (int, optional): 히스토그램의 빈(bin) 개수. 기본값은 200입니다.
+        cmap (str or Colormap, optional): 사용할 Matplotlib 컬러맵.
+                                            문자열 (예: 'viridis') 또는
+                                            커스텀 컬러맵 객체를 사용할 수 있습니다.
+                                            기본값은 'gray'입니다.
+    """
+    # 입력 데이터가 1차원인지 확인
+    if arr.ndim != 1:
+        raise ValueError("입력 배열은 반드시 1차원이어야 합니다.")
+
+    # clim의 기본값 설정
+    if clim is None:
+        clim = (arr.min(), arr.max())
+
+    # 히스토그램 계산
+    n, bins = np.histogram(arr, bins=nbins, range=clim)
+
+    # 각 bin의 중간값 계산
+    bin_centers = (bins[:-1] + bins[1:]) / 2
+
+    # 컬러맵 가져오기
+    colormap = get_cmap(cmap)
+
+    # bin의 중간값을 0과 1 사이로 정규화
+    norm = Normalize(vmin=clim[0], vmax=clim[1])
+    normalized_centers = norm(bin_centers)
+
+    # 정규화된 값에 따라 색상 결정
+    colors = colormap(normalized_centers)
+
+    # 히스토그램 그리기
+    # fig, ax = plt.subplots()
+    if ax is None:
+        ax = plt.gca()
+    ax.bar(bin_centers, n, width=(bins[1] - bins[0]), color=colors)
+
+    # 축과 제목 설정
+    ax.set_xlim(clim)
+    ax.set_yticks([])
+    # ax.set_xlabel('Value')
+    # ax.set_ylabel('Frequency')
+    # ax.set_title('Color Histogram')
     
