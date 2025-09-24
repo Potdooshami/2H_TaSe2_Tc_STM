@@ -7,10 +7,9 @@
 - remove scar
 
 ## ✨ 신규 기능
-- [] refactor `colorhistogram`
+- [x] refactor `colorhistogram`
 - [x] suptitle
-- [ ] refactor code
-- [ ] phase map upload
+- [x] phase map upload
 - [ ] lengthbar upload
 - [ ] guage fix again
   

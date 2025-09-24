@@ -17,3 +17,4 @@ xx.py
 *.pyc
 testmpl.py
 pa.pkl
+__pycache__/useful.cpython-312.pyc

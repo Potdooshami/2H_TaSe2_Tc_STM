@@ -184,3 +184,58 @@ def color_histogram(arr, clim=None, nbins=200, cmap='gray',ax = None):
     # ax.set_ylabel('Frequency')
     # ax.set_title('Color Histogram')
     
+
+
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
+
+
+def add_colorbar_to_figure(f, cmap, clim, xxyy):
+    """
+    Figure 객체에 지정된 위치와 속성으로 컬러바를 추가합니다.
+
+    <매개변수>
+    f (plt.figure): 컬러바를 추가할 Figure 객체
+    cmap (str or Colormap): 적용할 컬러맵
+    clim (iterable): 컬러바의 최솟값과 최댓값을 담은 리스트 또는 튜플 (예: [0, 1])
+    xxyy (iterable): Figure 좌표계(0~1) 기준 컬러바 위치 [left, bottom, width, height]
+
+    <반환값>
+    matplotlib.colorbar.Colorbar: 생성된 컬러바 객체
+    """
+    # 컬러바를 그릴 새로운 축(Axes)을 Figure에 추가
+    cax = f.add_axes(xxyy)
+    
+    # 정규화(Normalization) 객체 생성
+    norm = mcolors.Normalize(vmin=clim[0], vmax=clim[1])
+    
+    # 컬러맵과 정규화 정보를 담는 ScalarMappable 객체 생성
+    mappable = cm.ScalarMappable(norm=norm, cmap=cmap)
+    
+    # 지정된 축에 컬러바 생성
+    cb = f.colorbar(mappable, cax=cax, orientation='horizontal' if xxyy[2] > xxyy[3] else 'vertical')
+    
+    return cb
+
+def add_colorbar_for_image(img, xxyy):
+    """
+    Image 객체의 속성(cmap, clim)을 이용해 Figure에 컬러바를 추가합니다.
+
+    <매개변수>
+    img (matplotlib.image.AxesImage): `plt.imshow` 등으로 생성된 이미지 객체
+    xxyy (iterable): Figure 좌표계(0~1) 기준 컬러바 위치 [left, bottom, width, height]
+
+    <반환값>
+    matplotlib.colorbar.Colorbar: 생성된 컬러바 객체
+    """
+    # 이미지 객체로부터 Figure 객체를 가져옴
+    fig = img.axes.figure
+    
+    # 컬러바를 그릴 새로운 축(Axes)을 Figure에 추가
+    cax = fig.add_axes(xxyy)
+    
+    # 이미지 객체를 직접 사용하여 컬러바 생성
+    # cmap과 clim 정보가 자동으로 이미지로부터 전달됨
+    cb = fig.colorbar(img, cax=cax, orientation='horizontal' if xxyy[2] > xxyy[3] else 'vertical')
+    
+    return cb
