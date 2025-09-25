@@ -7,10 +7,10 @@
 - remove scar
 
 ## ✨ 신규 기능
-- [x] refactor `colorhistogram`
-- [x] suptitle
-- [x] phase map upload
-- [ ] lengthbar upload
+- [x] lengthbar upload
+  - [x] add lengthbar가 적절한 루프 안에 있지 않음
+- [x] suptitle 제목이 이상...
+- [ ] histogram tick
 - [ ] guage fix again
   
 
