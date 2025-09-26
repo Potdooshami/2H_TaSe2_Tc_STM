@@ -10,8 +10,8 @@
 - [x] lengthbar upload
   - [x] add lengthbar가 적절한 루프 안에 있지 않음
 - [x] suptitle 제목이 이상...
-- [ ] histogram tick
-- [ ] guage fix again
+- [x] histogram tick
+- [x] guage fix again
   
 
 ## 💡 아이디어
