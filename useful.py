@@ -239,3 +239,66 @@ def add_colorbar_for_image(img, xxyy):
     cb = fig.colorbar(img, cax=cax, orientation='horizontal' if xxyy[2] > xxyy[3] else 'vertical')
     
     return cb
+
+
+import matplotlib.pyplot as plt
+import matplotlib.figure
+import matplotlib.axes
+import matplotlib.image
+import matplotlib.colors as mcolors
+import matplotlib.cm as cm
+import numpy as np
+
+def add_colorbar(artist, *, xxyy=None, cmap=None, clim=None):
+    """
+    Figure, Axes, Image 객체에 컬러바를 추가합니다.
+    cmap, clim 정보가 주어지지 않으면 artist에서 자동으로 추론합니다.
+
+    <매개변수>
+    artist (Figure, Axes, or AxesImage): 컬러바를 추가할 대상 객체
+    xxyy (iterable, optional): Figure 좌표계 기준 컬러바 위치 [l, b, w, h].
+                                기본값: [0.8, 0.95, 0.1, 0.02]
+    cmap (str or Colormap, optional): 적용할 컬러맵. 없으면 artist에서 추론.
+    clim (iterable, optional): 컬러바의 최솟값/최댓값. 없으면 artist에서 추론.
+
+    <반환값>
+    matplotlib.colorbar.Colorbar: 생성된 컬러바 객체
+    """
+    # 1. artist 타입에 따라 figure와 image 정보를 찾습니다.
+    if isinstance(artist, matplotlib.image.AxesImage):
+        target_image = artist
+        f = target_image.get_figure()
+    elif isinstance(artist, matplotlib.axes.Axes):
+        if not artist.images:
+            raise ValueError("입력된 Axes 객체에 이미지가 없습니다.")
+        target_image = artist.images[-1]
+        f = artist.get_figure()
+    elif isinstance(artist, matplotlib.figure.Figure):
+        if not artist.axes:
+            raise ValueError("입력된 Figure 객체에 축(Axes)이 없습니다.")
+        ax = artist.axes[-1]
+        if not ax.images:
+            raise ValueError("Figure의 마지막 Axes에 이미지가 없습니다.")
+        target_image = ax.images[-1]
+        f = artist
+    else:
+        raise TypeError("artist는 Figure, Axes, AxesImage 타입이어야 합니다.")
+
+    # 2. cmap과 clim이 주어지지 않으면 image에서 추론합니다.
+    if cmap is None:
+        cmap = target_image.get_cmap()
+    if clim is None:
+        clim = target_image.get_clim()
+
+    # 3. xxyy의 기본값을 설정합니다.
+    if xxyy is None:
+        xxyy = [0.8, 0.95, 0.1, 0.02]
+
+    # 4. 컬러바를 생성합니다. (기존 로직 활용)
+    cax = f.add_axes(xxyy)
+    norm = mcolors.Normalize(vmin=clim[0], vmax=clim[1])
+    mappable = cm.ScalarMappable(norm=norm, cmap=cmap)
+    orientation = 'horizontal' if xxyy[2] > xxyy[3] else 'vertical'
+    cb = f.colorbar(mappable, cax=cax, orientation=orientation)
+    
+    return cb
