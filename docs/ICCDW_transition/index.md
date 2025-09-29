@@ -122,3 +122,10 @@ considering
 - We can check 3-fold degenaracy in one circular-periodicity.
 - As $T$ increase, preference for a particular phase decrease
 ## phase map
+```
+![alt text](CDW_center_analysis.png)'
+```
+![alt text](triCmap.png)
+![alt text](CDW_center_analysis_cmap.png)
+![alt text](otexColoring.png)
+
