@@ -116,16 +116,31 @@ considering
 ![alt text](image-11.png)
 - We can check 3-fold degenaracy in one circular-periodicity.
 - The returning length is much longer in 78K than the others.
+- (noisy image of 110K's $k_3$ is from artificial scan ramping motion)
 ### Lattice period
 ![alt text](image-12.png)
 ![alt text](image-13.png)
 - We can check 3-fold degenaracy in one circular-periodicity.
 - As $T$ increase, preference for a particular phase decrease
 ## phase map
-```
-![alt text](CDW_center_analysis.png)'
-```
-![alt text](triCmap.png)
+![alt text](triCmap.png)  
+- I introduce a new ternary colormap to repressent the relative proportions of triplet CDW states, HC(Hollow-centered), AC(Anion-centered) and CC(Cathode-centered).
+- Corresponding color is close to the corner means that the state is more pure.  
+  
+![alt text](otexColoring.png)  
+- Gray line object is domain wall where disloacation occur. 
+- White area enclosed by domain wall is CDW domain.
+- The fact that DW's color is gray means AC and HC are equally stable
+- We can classify domain vertices in two, AC-like one and HC-like one and spatially well-defined.
+- Colored spot in domain is resulted from point defect  
+  
 ![alt text](CDW_center_analysis_cmap.png)
-![alt text](otexColoring.png)
+- As temperature increase, domain-domain wall picture break down.
+
+![alt text](hitmap1.png)
+
+![alt text](hitmap2.png)  
+- above two figures are ternary hitmap(only difference is bin-size)
+- HC prefered in all temperature range.
+- AC probably prefered than CC but not enough clear.
 
