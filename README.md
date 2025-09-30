@@ -9,7 +9,7 @@
 # Results
 ## Soliton Lattice 
 ![alt text](image-3.png)
-## [Mcmillar's ICCDW transition](docs\ICCDW_transition\index.md)
+## [Mcmillar's ICCDW transition](docs/ICCDW_transition/index.md)
 [![](docs\ICCDW_transition\image-10.png)](docs\ICCDW_transition\index.md)
 ## Topoligical point defect
 ![alt text](image-5.png)
