@@ -259,26 +259,37 @@ class DWallColoring:
     dlt = self.dwThick
 
     classified3s = np.zeros(Z6.shape[0:2])
-    def getDWsegment(z6,is_close10):
-      class6 = [210,201,120,102,21,12]
-      blk = [1012,1102,120,210]
-      rlk = [1120,1210,12,102]
-      glk = [1021,1201,21,201]
-      class12 = np.array([blk,rlk,glk])
+    # --- 상수 정의 ---
+# 각 클래스에 해당하는 값들을 미리 정의합니다.
+    blk = [1012, 1102, 120, 210]
+    rlk = [1120, 1210, 12, 102]
+    glk = [1021, 1201, 21, 201]
+    class12 = np.array([blk, rlk, glk])  # Shape: (3, 4)
 
-      class6this = np.sum(z6*np.array([100,10,1]))
-      z6 =  class6 == class6this
-      class12this = class6this +1000*is_close10
-      classified = class12 == class12this
-      true_indices = np.where(classified)
-      classified3 = true_indices[0][0]
-      return classified3
-    for ix in range(Z6.shape[0]):
-      for iy in range(Z6.shape[1]):
-        z6 = Z6[ix,iy,:]# input 1
-        is_close10 = Is_close10[ix,iy]# input 2
-        classified3 = getDWsegment(z6,is_close10)
-        classified3s[ix,iy] = classified3
+    # Z6의 마지막 차원을 숫자로 변환하기 위한 가중치입니다.
+    weights = np.array([100, 10, 1])
+
+    # --- 벡터화된 계산 ---
+    # 가정: Z6 (H, W, 3) 형태의 3D 배열, Is_close10 (H, W) 형태의 2D 불리언 배열
+
+    # 1. Z6의 각 [r, g, b] 값을 하나의 숫자로 변환합니다. (for 루프의 class6this 계산)
+    #    (H, W, 3) @ (3,) -> (H, W) 형태의 배열이 됩니다.
+    class6this_map = Z6 @ weights
+
+    # 2. Is_close10 조건에 따라 1000을 더합니다. (for 루프의 class12this 계산)
+    #    Is_close10이 True이면 1000, False이면 0이 더해집니다.
+    class12this_map = class6this_map + 1000 * Is_close10
+
+    # 3. class12 배열(3, 4)과 class12this_map(H, W)을 비교하여 각 픽셀이 어느 클래스에 속하는지 찾습니다.
+    #    - class12this_map을 (H, W, 1, 1)로 확장합니다.
+    #    - 브로드캐스팅을 통해 class12(3, 4)와 비교하여 (H, W, 3, 4) 형태의 불리언 배열을 생성합니다.
+    #    - any(axis=3)를 통해 각 행(class)에 일치하는 값이 있는지 확인하여 (H, W, 3) 형태로 만듭니다.
+    row_has_match = (class12this_map[..., np.newaxis, np.newaxis] == class12).any(axis=3)
+
+    # 4. argmax(axis=2)를 사용하여 True 값을 가진 첫 번째 행(class)의 인덱스(0, 1, 또는 2)를 찾습니다.
+    #    이것이 최종 결과인 classified3s가 됩니다.
+    classified3s = np.argmax(row_has_match, axis=2)
+
     classified3s_rgb = np.stack((classified3s==1,classified3s==0,classified3s==2),axis=2)
     dwBW = Info[1][:,:,0]<dlt
     
