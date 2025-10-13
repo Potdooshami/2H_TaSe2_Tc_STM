@@ -185,9 +185,10 @@ class phiPrinter():
     def Z6(self):
       return self.Info[3]
     def pHAC(self):
+      fig = plt.figure(figsize=(20,20))
       HAC_argmax = np.argmax(self.BaryHAC, axis=2)
     #   fig = plt.figure(figsize=(20,20))
-      ax = plt.imshow(HAC_argmax,cmap='gray')
+      ax = fig.imshow(HAC_argmax,cmap='gray')
       return ax
     
 class DomainColoring:
@@ -243,7 +244,69 @@ class DomainColoring:
     return clrset
   
 class DWallColoring:
-  pass
+  def __init__(self,Info,phase,dwThick=.2):
+    self.Info = Info
+    self.phase = phase
+    self.dwThick = dwThick
+        
+  @property
+  def rgb(self):
+    Info = self.Info
+    Z6 = Info[3]
+    Is_close10 = Info[0][:,:,2]>0
+    Phi1 = self.phase[0]
+    Phi2 = - self.phase[1]
+    dlt = self.dwThick
+
+    classified3s = np.zeros(Z6.shape[0:2])
+    def getDWsegment(z6,is_close10):
+      class6 = [210,201,120,102,21,12]
+      blk = [1012,1102,120,210]
+      rlk = [1120,1210,12,102]
+      glk = [1021,1201,21,201]
+      class12 = np.array([blk,rlk,glk])
+
+      class6this = np.sum(z6*np.array([100,10,1]))
+      z6 =  class6 == class6this
+      class12this = class6this +1000*is_close10
+      classified = class12 == class12this
+      true_indices = np.where(classified)
+      classified3 = true_indices[0][0]
+      return classified3
+    for ix in range(Z6.shape[0]):
+      for iy in range(Z6.shape[1]):
+        z6 = Z6[ix,iy,:]# input 1
+        is_close10 = Is_close10[ix,iy]# input 2
+        classified3 = getDWsegment(z6,is_close10)
+        classified3s[ix,iy] = classified3
+    classified3s_rgb = np.stack((classified3s==1,classified3s==0,classified3s==2),axis=2)
+    dwBW = Info[1][:,:,0]<dlt
+    
+    dw_rgb = classified3s_rgb * dwBW[:, :, np.newaxis]
+    Z3z3,Rphi12 = z3z3split(Phi1,Phi2)
+    coefs = np.array([[-2/4,4/4],[1/2,1/2],[4/4,-2/4]])
+
+    chiral = np.einsum('ijk,li->jkl', np.array(Rphi12), coefs)
+    chiral = chiral[:,:,[2,0,1]]
+    chiral[:,:,2] = -chiral[:,:,2]
+    chiral_ = np.mod(chiral+dlt/2,.5)-dlt/2
+    chiral_ = -(1/dlt)*(chiral_-dlt/2)
+    final = chiral_*dw_rgb
+
+    from skimage.color import rgb2hsv,hsv2rgb #domain is white
+    final2 = rgb2hsv(final)
+    final2[:,:,1] = final2[:,:,2]
+    final2[:,:,2] = 1
+    rgb = hsv2rgb(final2)
+    
+
+    return rgb
+
+  def show(self):
+    plt.imshow(self.rgb)
+    plt.axis('off')
+    plt.show()
+
 class DVertexColoring:
   pass
 class PhaseMapVisualizer:
