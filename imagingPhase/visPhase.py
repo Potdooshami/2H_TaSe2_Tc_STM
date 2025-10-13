@@ -1,3 +1,7 @@
+"""
+visualize phasemap from phase info
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 ## Divide ##
@@ -186,8 +190,64 @@ class phiPrinter():
       ax = plt.imshow(HAC_argmax,cmap='gray')
       return ax
     
+class DomainColoring:
+  def __init__(self,Info,clrset=None):
+    self.Info = Info
+    self.z3z3hex = self._get_z3z3hex(Info)
+    if clrset is None:
+      self.clrset = self._set_defualt_clrset()
+    else:
+      self.clrset = clrset
+  @property
+  def phase9(self):
+    indices_x = self.z3z3hex[:, :, 0].astype(int)
+    indices_y = self.z3z3hex[:, :, 1].astype(int)
+    phase9 = self.clrset[indices_x, indices_y]
+    return phase9
+  def show(self):
+    plt.imshow(self.phase9)
+    plt.axis('off')
+    plt.show()
+  
+  @staticmethod
+  def _get_z3z3hex(Info):
+    HHH_argmax = np.argmax(Info[0], axis=2)
+    mod01,mod10 = np.divmod(HHH_argmax ,2)
+    hex1 = np.mod(Info[2][:,:,0] + mod10,3)
+    hex2 = np.mod(Info[2][:,:,1] + mod01,3)
+    z3z3hex = np.stack((hex1,hex2),axis=2)
+    return z3z3hex
+  @staticmethod
+  def _set_defualt_clrset():
+    colors = {
+    "Red Bright": (1.0, 0.302, 0.302),   # #FF4D4D
+    "Red Dark":   (0.478, 0.110, 0.110), # #7A1C1C
+    "Green Bright": (0.302, 1.0, 0.302), # #4DFF4D
+    "Green Dark":   (0.110, 0.478, 0.110), # #1C7A1C
+    "Blue Bright":  (0.302, 0.58, 1.0),  # #4D94FF
+    "Blue Dark":    (0.110, 0.110, 0.478) # #1C1C7A
+    }
+    p_00 = [.5,.5,.5]
+    p_12 = [.0,.0,.0]
+    p_21 = [1,1,1]
 
-    
+    p_10 = colors["Red Dark"]
+    p_01 = colors["Green Dark"]
+    p_22 = colors["Blue Dark"]
+
+    p_20 = colors["Red Bright"]
+    p_02 = colors["Green Bright"]    
+    p_11 = colors["Blue Bright"]
+    clrset = [[p_00,p_01,p_02],[p_10,p_11,p_12],[p_20,p_21,p_22]]
+    clrset = np.array(clrset)
+    return clrset
+  
+class DWallColoring:
+  pass
+class DVertexColoring:
+  pass
+class PhaseMapVisualizer:
+  pass    
 
       
     
