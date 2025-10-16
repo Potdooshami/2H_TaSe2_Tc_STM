@@ -22,6 +22,17 @@ class PrimitiveVector2D:
     @property
     def clrs(self):
         return np.array([self.clr_O,self.clr_a1,self.clr_a2])
+    def cal_xy_from_ij(self,ij):
+        ij = np.array(ij).reshape(-1,2)
+        return self.O + ij[:,0].reshape(-1,1)*self.a1 + ij[:,1].reshape(-1,1)*self.a2
+    def cal_ij_from_xy(self,xy):
+        xy = np.array(xy).reshape(-1,2)
+        A = self.I_xy__a12
+        if np.abs(np.linalg.det(A))<1e-9:
+            raise ValueError("a1 and a2 are linearly dependent")
+        A_inv = np.linalg.inv(A)
+        ij = A_inv@(xy - self.O).T
+        return ij.T
     def plot_gizmo(self):
         for ind_a12 in range(2):
             dx,dy =self.I_xy__a12[:,ind_a12]
@@ -106,9 +117,20 @@ class LatticePoints2D:
         O = self.primitive_vector.O
         self.Indices = self.find_lattice_indices_in_rect(a1, a2, O, xmin, xmax, ymin, ymax)
     def generate_points_by_manual(self,ijList):
-        pass
-    def plot_points(self,marker='o',markersize=5,clrs='b'):
-        pass
+        self.Indices = np.array(ijList).reshape(-1,2)
+    def xy(self):
+        return self.primitive_vector.cal_xy_from_ij(self.Indices)
+    def plot_scatter(self,**kwargs):
+        xy = self.xy()
+        plt.scatter(xy[:,0],xy[:,1],**kwargs)
+        plt.axis('equal')
+    def plot_text(self,**kwargs):
+        xy = self.xy()
+        str_list = [f'({row[0]},{row[1]})' for row in self.Indices]
+        for x,y,s in zip(xy[:,0],xy[:,1],str_list):
+            plt.text(x,y,s,**kwargs)        
+        plt.axis('equal')
+
     @staticmethod
     def find_lattice_indices_in_rect(a1, a2, O, xmin, xmax, ymin, ymax):
         """
@@ -178,7 +200,16 @@ if __name__ == "__main__":
     crys.unit_vectors[1].plot_gizmo()
     crys.unit_vectors[1].plot_wigner_seitz_2d()
     crys.unit_vectors[1].plot_paral_2d()       
+    primVec = crys.unit_vectors[0]
+    latPts = LatticePoints2D(primVec)
+    latPts.generate_points_by_xylim(0,4,0,4)
+    latPts.generate_points_by_range((-3,3),(-3,3))
+    latPts.generate_points_by_manual([[0,0],[1,4],[0,1],[-1,-2]])
+    latPts.plot_scatter(color='r')
+    latPts.plot_text(color='k')
     plt.show()
+    
+    # plt.show()
     print('main end')
     
    
