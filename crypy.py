@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 from scipy.spatial import Voronoi
 class CrystalGenerator2D:
     def __init__(self,a1,a2,O=(0,0)):
@@ -52,7 +53,11 @@ class PrimitiveVector2D:
         print(vertices)
         fill_wigner =plt.fill(vertices[0,:],vertices[1,:],edgecolor='k',fill=False,linewidth=self.gizmowidth/2)
         plt.axis('equal')
-        return fill_wigner    
+        return fill_wigner
+    def plot_all(self):
+        self.plot_gizmo()
+        self.plot_wigner_seitz_2d()
+        self.plot_paral_2d()    
     def get_super_structure(self,n1,n2):
         return PrimitiveVector2D(n1*self.a1,n2*self.a2,O=self.O,gizmowidth=self.gizmowidth/(n1+n2))
     def get_sub_structure(self,n1,n2):
@@ -111,24 +116,31 @@ class LatticePoints2D:
     def generate_points_by_range(self,n1_range,n2_range):    
         self.Indices = np.meshgrid(np.arange(n1_range[0],n1_range[1]+1),np.arange(n2_range[0],n2_range[1]+1),indexing='ij')
         self.Indices = np.array(self.Indices).reshape(2,-1).T
-    def generate_points_by_xylim(self,xmin,xmax,ymin,ymax):
+    def generate_points_by_xylim(self,xrng,yrng):
+        xmin, xmax = xrng
+        ymin, ymax = yrng
         a1 = self.primitive_vector.a1
         a2 = self.primitive_vector.a2
         O = self.primitive_vector.O
         self.Indices = self.find_lattice_indices_in_rect(a1, a2, O, xmin, xmax, ymin, ymax)
     def generate_points_by_manual(self,ijList):
         self.Indices = np.array(ijList).reshape(-1,2)
+    @property
     def xy(self):
         return self.primitive_vector.cal_xy_from_ij(self.Indices)
     def plot_scatter(self,**kwargs):
-        xy = self.xy()
+        xy = self.xy
         plt.scatter(xy[:,0],xy[:,1],**kwargs)
         plt.axis('equal')
     def plot_text(self,**kwargs):
-        xy = self.xy()
+        xy = self.xy
         str_list = [f'({row[0]},{row[1]})' for row in self.Indices]
         for x,y,s in zip(xy[:,0],xy[:,1],str_list):
             plt.text(x,y,s,**kwargs)        
+        plt.axis('equal')
+    def plot_line(self,**kwargs):
+        xy = self.xy
+        plt.plot(xy[:,0],xy[:,1],**kwargs)
         plt.axis('equal')
 
     @staticmethod
@@ -189,28 +201,83 @@ class LatticePoints2D:
                     valid_indices.append([i, j])
                     
         return np.array(valid_indices)
+class Basis2D:
+    def __init__(self,primitive_vector:PrimitiveVector2D):
+        self.primitive_vector = primitive_vector
+        self._artist_list = []
+    def add_artist(self,generator,v_a12,label):
+        self._artist_list.append({'generator':generator,'v_a12':v_a12,'label':label})
+    @property
+    def basis_df(self):
+        return pd.DataFrame(self._artist_list) 
+    def plot_basis(self):
+        basis_df = self.basis_df
+        for idx,row in basis_df.iterrows():
+            v_a12 = np.array(row['v_a12']).reshape(-1,2)
+            v_xy = self.primitive_vector.cal_xy_from_ij(v_a12)
+            row['generator'](v_xy[:,0],v_xy[:,1])
+            plt.text(v_xy[:,0].mean(),v_xy[:,1].mean(),row['label'],color='k')
+
+class Crystal2D:
+    def __init__(self,basis:Basis2D,lattice:LatticePoints2D):
+        self._basis = basis 
+        self._lattice = lattice
+    def plot_crystal(self):
+        basis_df = self._basis.basis_df
+        Indices = self._lattice.Indices
+        for idx,row in basis_df.iterrows():
+            v_a12 = np.array(row['v_a12']).reshape(-1,2)#sub unit cell position
+            v_xy = self._basis.primitive_vector.cal_xy_from_ij(v_a12)
+            for ij in Indices:
+                O_ij = self._lattice.primitive_vector.cal_xy_from_ij(ij)
+                O_ij = O_ij.flatten()
+                x = v_xy[:,0]+O_ij[0]
+                y = v_xy[:,1]+O_ij[1]
+                row['generator'](x,y)
+        f = plt.gcf()
+        ax = plt.gca()
+        ax.set_aspect('equal', adjustable='box')    
+        return (f,ax)
+
+
+
+
 if __name__ == "__main__":
-    print('main start')
-    crys = CrystalGenerator2D(np.array([1,0]), np.array([-0.5,np.sqrt(3)/2]),O=(2,2))
-    crys.add_superstructure(3,3)
-    crys.unit_vectors[0].plot_gizmo()
-    crys.unit_vectors[0].plot_wigner_seitz_2d()
-    # print(crys.unit_vectors[0].get_wigner_seitz_vertices_2d())
-    crys.unit_vectors[0].plot_paral_2d()
-    crys.unit_vectors[1].plot_gizmo()
-    crys.unit_vectors[1].plot_wigner_seitz_2d()
-    crys.unit_vectors[1].plot_paral_2d()       
-    primVec = crys.unit_vectors[0]
-    latPts = LatticePoints2D(primVec)
-    latPts.generate_points_by_xylim(0,4,0,4)
-    latPts.generate_points_by_range((-3,3),(-3,3))
-    latPts.generate_points_by_manual([[0,0],[1,4],[0,1],[-1,-2]])
-    latPts.plot_scatter(color='r')
-    latPts.plot_text(color='k')
+    import crypy as cp
+    import matplotlib.pyplot as plt
+    import importlib
+    importlib.reload(cp)
+    a1 = [1,0]
+    a2 = [-0.5,3**0.5/2]
+    pv = cp.PrimitiveVector2D(a1,a2)
+    pv2 = pv.get_sub_structure(3,3)
+    bss1 = cp.Basis2D(pv2)
+    
+    
+    atomgen1 = lambda x,y: plt.plot(x,y,color='r',marker='o',linestyle='None',markersize=10)
+    atomgen2 = lambda x,y: plt.plot(x,y,color='g',marker='o',linestyle='None',markersize=10)
+    bondgen = lambda xx,yy: plt.plot(xx,yy,color='b')
+
+    p1=(2,1)
+    p2=(1,2)
+    p3=(1,-1)
+    p4=(-1,1)
+    
+    bss1.add_artist(bondgen,(p1,p3),label='bond1')
+    bss1.add_artist(bondgen,(p2,p4),label='bond2')
+    bss1.add_artist(bondgen,(p1,p2),label='bond3')
+    bss1.add_artist(atomgen1,(p1),label='atom1')
+    bss1.add_artist(atomgen2,(p2),label='atom2')
+    
+
+    lp = cp.LatticePoints2D(pv) 
+    lp.generate_points_by_xylim((-5,5),(-5,5))
+    
+
+    cry = cp.Crystal2D(bss1,lp)
+    f,ax =cry.plot_crystal()    
+    ax.set_xlim(-1,1)
+    ax.set_ylim(-1,1)    
     plt.show()
-    
-    # plt.show()
-    print('main end')
-    
    
 
