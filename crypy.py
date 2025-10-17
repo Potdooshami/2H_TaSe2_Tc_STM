@@ -238,6 +238,20 @@ class Crystal2D:
         ax = plt.gca()
         ax.set_aspect('equal', adjustable='box')    
         return (f,ax)
+class Collection:
+    class Generator:
+        @staticmethod
+        def gen_regular_polygon(n,x=0,y=0,r=1,c='blue',phi=0):
+            angles = np.linspace(0, 2 * np.pi, n+1)[:-1] + phi
+            x_vertices = x + r * np.cos(angles)
+            y_vertices = y + r * np.sin(angles)
+            return plt.fill(x_vertices, y_vertices, color=c, alpha=0.5)
+        @staticmethod
+        def gen_hexagon(n=6,**kwargs):
+            return Collection.Generator.gen_regular_polygon(6,**kwargs)
+            
+
+
 
 
 
@@ -279,5 +293,6 @@ if __name__ == "__main__":
     ax.set_xlim(-1,1)
     ax.set_ylim(-1,1)    
     plt.show()
-   
+
+
 
