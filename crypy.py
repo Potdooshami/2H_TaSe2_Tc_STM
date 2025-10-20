@@ -2,13 +2,54 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from scipy.spatial import Voronoi
+
+class TrackedInstance:
+    _all_instances = {}
+    def __init__(self):
+        cls = type(self)
+        if cls not in TrackedInstance._all_instances:
+            TrackedInstance._all_instances[cls] = []
+        TrackedInstance._all_instances[cls].append(self)
+    @classmethod
+    def get_instances_df(cls):
+        instances_list = TrackedInstance._all_instances.get(cls, [])
+        if not instances_list:
+            print(f"No instances found for class {cls.__name__}.")
+            return pd.DataFrame()
+        data = [vars(inst) for inst in instances_list]
+        return pd.DataFrame(data)
+    @staticmethod
+    def print_all_instances_class_wise():
+        print("All instances class-wise:")
+        if not TrackedInstance._all_instances:
+            print("No instances found.")
+            print("_"*40)
+            return
+        for cls, instances_list in TrackedInstance._all_instances.items():
+            print(f"Class: {cls.__name__}, Number of instances: {len(instances_list)}")
+            df = cls.get_instances_df()
+            print(df.to_string())
+        print("\n" + "-" * 40)
+        
+    @classmethod
+    def clear_instances(cls):
+        if cls in TrackedInstance._all_instances:
+            TrackedInstance._all_instances.pop(cls)
+            print(f" '{cls.__name__}' class instances cleared.")
+        else:
+            print(f"No instances found for class '{cls.__name__}'.")
+    @staticmethod
+    def clear_all_project_instances():
+        TrackedInstance._all_instances.clear()
+        print("All class instances cleared.")
+                
 class CrystalGenerator2D:
     def __init__(self,a1,a2,O=(0,0)):
         self.minimal_unit_vector = (a1,a2)
         self.unit_vectors = [PrimitiveVector2D(a1,a2,O=O)]
     def add_superstructure(self,n1,n2):
         self.unit_vectors.append(self.unit_vectors[0].get_super_structure(n1,n2))
-class PrimitiveVector2D:
+class PrimitiveVector2D(TrackedInstance):
     def __init__(self,a1,a2,O=np.array((0,0)),gizmowidth=10):
         self.a1 = np.array(a1).reshape(2)
         self.a2 = np.array(a2).reshape(2)
@@ -17,6 +58,7 @@ class PrimitiveVector2D:
         self.clr_O = [0,0,0]
         self.clr_a1 = [1,0,0]
         self.clr_a2 = [0,1,0]
+        super().__init__()
     @property
     def I_xy__a12(self):
         return np.array([self.a1,self.a2]).T
@@ -110,9 +152,10 @@ class PrimitiveVector2D:
             return vor.vertices[valid_indices]
         return vor.vertices[vertex_indices]
                       
-class LatticePoints2D:
+class LatticePoints2D(TrackedInstance):
     def __init__(self,primitive_vector:PrimitiveVector2D):
         self.primitive_vector = primitive_vector
+        super().__init__()
     def generate_points_by_range(self,n1_range,n2_range):    
         self.Indices = np.meshgrid(np.arange(n1_range[0],n1_range[1]+1),np.arange(n2_range[0],n2_range[1]+1),indexing='ij')
         self.Indices = np.array(self.Indices).reshape(2,-1).T
@@ -201,10 +244,11 @@ class LatticePoints2D:
                     valid_indices.append([i, j])
                     
         return np.array(valid_indices)
-class Basis2D:
+class Basis2D(TrackedInstance):
     def __init__(self,primitive_vector:PrimitiveVector2D):
         self.primitive_vector = primitive_vector
         self._artist_list = []
+        super().__init__()
     def add_artist(self,generator,v_a12,label):
         self._artist_list.append({'generator':generator,'v_a12':v_a12,'label':label})
     @property
@@ -218,10 +262,11 @@ class Basis2D:
             row['generator'](v_xy[:,0],v_xy[:,1])
             plt.text(v_xy[:,0].mean(),v_xy[:,1].mean(),row['label'],color='k')
 
-class Crystal2D:
+class Crystal2D(TrackedInstance):
     def __init__(self,basis:Basis2D,lattice:LatticePoints2D):
         self._basis = basis 
         self._lattice = lattice
+        super().__init__()
     def plot_crystal(self):
         basis_df = self._basis.basis_df
         Indices = self._lattice.Indices
