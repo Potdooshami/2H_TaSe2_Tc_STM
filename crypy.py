@@ -92,7 +92,6 @@ class PrimitiveVector2D(TrackedInstance):
         return fill_wigner
     def plot_paral_2d(self):
         vertices = self.I_xy__a12@np.array([[0,1,1,0],[0,0,1,1]]) + self.O.reshape(2,1)
-        print(vertices)
         fill_wigner =plt.fill(vertices[0,:],vertices[1,:],edgecolor='k',fill=False,linewidth=self.gizmowidth/2)
         plt.axis('equal')
         return fill_wigner
@@ -168,6 +167,7 @@ class LatticePoints2D(TrackedInstance):
         self.Indices = self.find_lattice_indices_in_rect(a1, a2, O, xmin, xmax, ymin, ymax)
     def generate_points_by_manual(self,ijList):
         self.Indices = np.array(ijList).reshape(-1,2)
+    
     @property
     def xy(self):
         return self.primitive_vector.cal_xy_from_ij(self.Indices)
@@ -261,13 +261,14 @@ class Basis2D(TrackedInstance):
             v_xy = self.primitive_vector.cal_xy_from_ij(v_a12)
             row['generator'](v_xy[:,0],v_xy[:,1])
             plt.text(v_xy[:,0].mean(),v_xy[:,1].mean(),row['label'],color='k')
+            plt.axis('equal')
 
 class Crystal2D(TrackedInstance):
     def __init__(self,basis:Basis2D,lattice:LatticePoints2D):
         self._basis = basis 
         self._lattice = lattice
         super().__init__()
-    def plot_crystal(self):
+    def plot_crystal(self,x_=0,y_=0):
         basis_df = self._basis.basis_df
         Indices = self._lattice.Indices
         for idx,row in basis_df.iterrows():
@@ -276,13 +277,14 @@ class Crystal2D(TrackedInstance):
             for ij in Indices:
                 O_ij = self._lattice.primitive_vector.cal_xy_from_ij(ij)
                 O_ij = O_ij.flatten()
-                x = v_xy[:,0]+O_ij[0]
-                y = v_xy[:,1]+O_ij[1]
+                x = v_xy[:,0]+O_ij[0] + x_
+                y = v_xy[:,1]+O_ij[1] + y_
                 row['generator'](x,y)
         f = plt.gcf()
         ax = plt.gca()
         ax.set_aspect('equal', adjustable='box')    
         return (f,ax)
+
 class Collection:
     class Generator:
         @staticmethod
@@ -290,9 +292,9 @@ class Collection:
             angles = np.linspace(0, 2 * np.pi, n+1)[:-1] + phi
             x_vertices = x + r * np.cos(angles)
             y_vertices = y + r * np.sin(angles)
-            return plt.fill(x_vertices, y_vertices, color=c, alpha=0.5)
+            return plt.fill(x_vertices, y_vertices, color=c, alpha=1)
         @staticmethod
-        def gen_hexagon(n=6,**kwargs):
+        def gen_hexagon(**kwargs):
             return Collection.Generator.gen_regular_polygon(6,**kwargs)
             
 
