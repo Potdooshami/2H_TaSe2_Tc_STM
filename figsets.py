@@ -344,6 +344,11 @@ class PubProject:
         for i, pub_fig in enumerate(self.figs):
             try:
                 pub_fig.plot_layout()
+                manager = plt.get_current_fig_manager()
+                x_pos = 500 + i * 200
+                y_pos = 100 + i * 50
+                manager = pub_fig.fig.canvas.manager
+                manager.window.move(x_pos, y_pos)
             except Exception as e:
                 print(f"Figure {i} 레이아웃 플롯팅 중 오류 발생: {e}")
 
