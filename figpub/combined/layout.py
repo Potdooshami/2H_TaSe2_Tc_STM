@@ -1,4 +1,6 @@
 from figpub.figsets import *
+from figpub.solLatt.layout import fig3 as fig2
+from figpub.solLatt.layout import fig4 as fig3
 fig1 = PubFig('2col',.8,width_rescale=.8)
 REDUCE_FACTOR = 0.01
 rf = REDUCE_FACTOR
@@ -31,53 +33,54 @@ ax.reduce(w_reduce=rf,h_reduce=rf,anchor='bottom_right')
 xy = ax.get_point('bottom_left')
 fig1.add_child(label = 'c_0',xy=xy,wh=[.2,.2],anchor='bottom_left',comment='<diagram of DWN>')
 #----------------------------------------------------------------------------------------------------------------
-fig2 = PubFig('2col',.5)
-lu = .25
-ls = [lu, lu/2,.2, .8-lu*(3/2)]
-xs = []
-ys = [0,.25]
+# fig2 = PubFig('2col',.5)
+# lu = .25
+# ls = [lu, lu/2,.2, .8-lu*(3/2)]
+# xs = []
+# ys = [0,.25]
 
-fig2.add_child([0,0,ls[-1],.5],label='a',comment='<schematic of vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1],lu,lu,lu],label='b',comment='<topo of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1]+lu,lu*(3/2),lu/2,lu/2],label='c',comment='<shiftmap of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1]+lu,lu*(1),lu/2,lu/2],label='d',comment='<tripletmap of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1],0,lu,lu],label='e',comment ='<... of L>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1]+lu,lu*(1/2),lu/2,lu/2],label='f').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1]+lu,lu*(0),lu/2,lu/2],label='g').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig2.add_child([ls[-1]+lu*(3/2),0,.2,.5],label='h',
-                comment='<schematic of vortex joining>\n' \
-                'R,L vortex\n' \
-                '3 R-L bonding\n' \
-                'honeycomb tile').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([0,0,ls[-1],.5],label='a',comment='<schematic of vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1],lu,lu,lu],label='b',comment='<topo of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1]+lu,lu*(3/2),lu/2,lu/2],label='c',comment='<shiftmap of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1]+lu,lu*(1),lu/2,lu/2],label='d',comment='<tripletmap of R vortex>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1],0,lu,lu],label='e',comment ='<... of L>').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1]+lu,lu*(1/2),lu/2,lu/2],label='f').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1]+lu,lu*(0),lu/2,lu/2],label='g').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig2.add_child([ls[-1]+lu*(3/2),0,.2,.5],label='h',
+#                 comment='<schematic of vortex joining>\n' \
+#                 'R,L vortex\n' \
+#                 '3 R-L bonding\n' \
+#                 'honeycomb tile').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
 #----------------------------------------------------------------------------------------------------------------    
-h1 = .1 
-h2 =  .3
-h3 = .3
-hs = [h1,h2,h3]
-h123 = h1+h2+h3
-fig3 = PubFig('1col',1+h123)    
-fig3.add_child([0,h123,1,1],label='a',
-                comment='<schematic of DWN>\n' \
-                'background white with phase value\n' \
-                'directional DW + vortex symbol\n' \
-                'bounding Loop set1: unique boundary decomposition,\n' \
-                'bounding Loop set2: Vortex calculation').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-lbls = 'bcd'
-ys = [h2+h3,h3,0]
-sublbls =['','_1','_2']
-w = 1/3
-for iloop,lbl_main in zip(range(3),lbls):
-    x= iloop/3
-    for iinfo,lbl_sub,y,h in zip(range(3),sublbls,ys,hs):
-        xywh =[x,y,w,h]
-        label = lbl_main+lbl_sub
-        fig3.add_child(xywh,label=label).reduce(w_reduce=rf,h_reduce=rf,anchor='center')
-fig3.get_child('b').comment = '<pathwords>:boundcary decomposition'
-fig3.get_child('b_1').comment = '<geometric>'
-fig3.get_child('b_2').comment = '<algebraic>'
-fig3.get_child('c').comment = 'charge calculation 1'
-fig3.get_child('d').comment = 'charge calculation 2'
-
+# h1 = .1 
+# h2 =  .3
+# h3 = .3
+# hs = [h1,h2,h3]
+# h123 = h1+h2+h3
+# fig3 = PubFig('1col',1+h123)    
+# fig3.add_child([0,h123,1,1],label='a',
+#                 comment='<schematic of DWN>\n' \
+#                 'background white with phase value\n' \
+#                 'directional DW + vortex symbol\n' \
+#                 'bounding Loop set1: unique boundary decomposition,\n' \
+#                 'bounding Loop set2: Vortex calculation').reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# lbls = 'bcd'
+# ys = [h2+h3,h3,0]
+# sublbls =['','_1','_2']
+# w = 1/3
+# for iloop,lbl_main in zip(range(3),lbls):
+#     x= iloop/3
+#     for iinfo,lbl_sub,y,h in zip(range(3),sublbls,ys,hs):
+#         xywh =[x,y,w,h]
+#         label = lbl_main+lbl_sub
+#         fig3.add_child(xywh,label=label).reduce(w_reduce=rf,h_reduce=rf,anchor='center')
+# fig3.get_child('b').comment = '<pathwords>:boundcary decomposition'
+# fig3.get_child('b_1').comment = '<geometric>'
+# fig3.get_child('b_2').comment = '<algebraic>'
+# fig3.get_child('c').comment = 'charge calculation 1'
+# fig3.get_child('d').comment = 'charge calculation 2'
+# fig2 = pSL[2]
+# fig3 = pSL[3]
 
 #----------------------------------------------------------------------------------------------------------------
 h1 = .7
