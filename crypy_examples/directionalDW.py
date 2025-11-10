@@ -1,4 +1,4 @@
-from .. import crypy as cp
+import crypy as cp
 import math
 import numpy as np
 import matplotlib.pyplot as plt

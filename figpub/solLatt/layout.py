@@ -1,4 +1,4 @@
-from figsets import *
+from figpub.figsets import *
 REDUCE_FACTOR = 0.01
 rf = REDUCE_FACTOR
 #----------------------------------------------------------------------------------------
@@ -106,5 +106,6 @@ fig4.get_child('b').comment = '<pathwords>:boundcary decomposition'
 fig4.get_child('d').comment = 'charge calculation 2'
 #----------------------------------------------------------------------------------------
 my_paper = PubProject(fig1, fig2, fig3, fig4)
-my_paper.plot_layouts()
-my_paper.show()
+if __name__ == '__main__':
+    my_paper.plot_layouts()
+    my_paper.show()

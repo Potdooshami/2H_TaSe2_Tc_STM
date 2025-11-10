@@ -1,4 +1,4 @@
-from figsets import *
+from figpub.figsets import *
 REDUCE_FACTOR = 0.01
 rf = REDUCE_FACTOR
 #----------------------------------------------------------------------------------------
@@ -133,8 +133,9 @@ for icase,x in zip(range(num_case),np.arange(num_case)/num_case):
 
 #-----
 print('run iccdw project')
-f = fig4
-f.plot_layout()
-f.fig.show()
-breakpoint()
+my_paper = PubProject(fig1, fig2, fig3, fig4)
+if __name__ == '__main__':
+    my_paper.plot_layouts()
+    my_paper.show()
+
 

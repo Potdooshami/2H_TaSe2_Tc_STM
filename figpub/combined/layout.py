@@ -1,4 +1,4 @@
-from figsets import *
+from figpub.figsets import *
 fig1 = PubFig('2col',.8,width_rescale=.8)
 REDUCE_FACTOR = 0.01
 rf = REDUCE_FACTOR
@@ -112,4 +112,7 @@ fig4.get_child('c').comment = '...-110K'
 
 #----------------------------------------------------------------------------------------------------------------
 my_paper = PubProject(fig1, fig2, fig3, fig4)
-print("\n--- 모든 Figure 레이아웃 플롯팅 ---")
+if __name__ == '__main__':
+    my_paper.plot_layouts()
+    my_paper.show()
+    print("\n--- 모든 Figure 레이아웃 플롯팅 ---")
