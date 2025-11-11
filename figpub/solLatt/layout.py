@@ -105,7 +105,46 @@ fig4.get_child('c').comment = 'charge calculation 1'
 fig4.get_child('b').comment = '<pathwords>:boundcary decomposition'
 fig4.get_child('d').comment = 'charge calculation 2'
 #----------------------------------------------------------------------------------------
-my_paper = PubProject(fig1, fig2, fig3, fig4)
+fig1.figtitle = '3x3 Charge Density Wave (CDW) in 2H-TaSe2'
+fig2.figtitle = '3 types of topological domain walls (DW)'
+fig3.figtitle = 'two types of chiral vortices (R and L)'
+fig4.figtitle = 'Phase Pinning at the Domain Walls'
+fig1.keyword_info = ['Lattice structure', 
+                     'CDW in real space', 
+                     'FFT of Topo']
+fig1.keyword_argument = ['atom(Se) and CDW both corrugation are observed',
+                         'CDW center is hollow', 
+                         '3x3 CDW from FFT']
+fig2.keyword_info = ['three DWs topo', 
+                     'three DWs cartoon',
+                     'phaseshiftmap of DWN']
+fig2.keyword_argument = ['atom corruation is fixed but CDW currgation localy shift', 
+                         'three shift rgb has a b^3=g^3=r^3=rgb=0',
+                         'shiftmap shows honeycomb-like DWN']    
+fig3.keyword_info = ['schematic of DV', 
+                     'phase infos of DV', 
+                     'tinker toy model of DV']
+fig3.keyword_argument = ['tri-junction of 3 differnet phase', 
+                     'Identified by not only shift but also centerness',
+                     'honeycomb structure is naturally formed by the existence of R,L vortex']  
+fig4.keyword_info = ['DWN topological encoded','geometric diagram','algebraic diagram']
+fig4.keyword_argument = ['Bulk-boundary correspendence(Uniqueness of boundary decomposition)',
+                         'charge calculation from bounding loops',
+                         'Topological invariant is rigorously defined by group']
+                         
+
+
+my_paper = PubProject(fig1, fig2, fig3, fig4,
+                      title="Chiral vortex interlocking in topological soliton lattice",
+                      synopsis=[
+            "We investigated the 3x3 Charge Density Wave (CDW) in 2H-TaSe2.",
+            "3 types of topological domain walls (DW) were observed.",
+            "two types of chiral vortices (R and L) were identified",
+            "Spectroscopy confirms the insulating nature of the C-phase."
+        ])
+#----------------------------------------------------------------------------------------
+
 if __name__ == '__main__':
     my_paper.plot_layouts()
-    my_paper.show()
+    # my_paper.show()
+    my_paper.create_report(filename="Report_solLatt.pptx")
