@@ -13,7 +13,7 @@ p2 = np.array((1,2))/3 # basis point2
 p3=np.array((1,-1))/3  # basis point3
 p4=-p3 # basis point4
 
-n_dom =6 # single Domain's size factor
+n_dom =18 # single Domain's size factor
 n_supsup = 2*3*n_dom-2
 domain_range =  ((-1,1),(-1,1))
 n__ = 2*n_supsup
@@ -74,7 +74,6 @@ bss_supsup.add_artist(gen_domain,(0,0),label='domain')
 lp_supsup =  cp.LatticePoints2D(pv_supsup)
 lp_supsup.generate_points_by_range(*domain_range)
 cry_supsup = cp.Crystal2D(bss_supsup,lp_supsup)
-cry_supsup.plot_crystal()
 # endregion
 # endregion
 
@@ -90,7 +89,8 @@ cry_supsup.plot_crystal()
 # ax.set_xlim(-8,8)
 # ax.set_ylim(-8,8)
 
-
+cry_supsup.plot_crystal()
+# cry.plot_crystal()
 plt.show()
 
 

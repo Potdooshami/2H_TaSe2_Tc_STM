@@ -132,10 +132,51 @@ for icase,x in zip(range(num_case),np.arange(num_case)/num_case):
 
 
 #-----
+
+
+fig1.figtitle = 'Topography of ICCDW in 2H-TaSe2'
+fig2.figtitle = 'Spatial lock-in analysis of ICCDW'
+fig3.figtitle = 'Phase analysis under variable temperatrue'
+fig4.figtitle = 'phase unpinning and loss of coherence in ICCDW'
+fig1.keyword_info = ['Lattice structure', 
+                     'cmmensurate Island layer', 
+                     'commensruate shift layer']
+fig1.keyword_argument = ['commensurate islands seems randomly distributed',
+                         'islands relaltive shift is globally consistent',
+                         'triangle texture, stripe texture, weak cdw texture ... coexist']
+fig2.keyword_info = ['FFT peaks', 
+                     'k1,k2,k3 phase map']
+fig2.keyword_argument = ['3 lattice peaks and 3 CDW peaks', 
+                         'phase map show the continous misfit',
+                         'continous misfit explain diveresity of texture']    
+fig3.keyword_info = ['phase maps under variable T', 
+                     'fft result', 
+                     'phase map result']
+fig3.keyword_argument = ['T increase reduce IC featrue', 
+                     'T increase, FFT peak decrease and delta increase',
+                     'T increase, phase pinningness decrease and gradient of natrual misifit increase and finally collapse']  
+fig4.keyword_info = ['2d cartoon','1d cartoon']
+fig4.keyword_argument = [
+                         'phase unpinning',
+                         'loss of coherence']
+                         
+
+
+my_paper = PubProject(fig1, fig2, fig3, fig4,
+                      title="Real-space imaging of incommensurate charge density wave transition: \n" \
+                      "Loss of Coherence and Phase Unpinning",
+                      synopsis=[
+            "ICCDW phase's real-space image: commensurate island and globaly conistent phase misfit",
+            "Continuous phase mapping by spatial lock-in",
+            "spatial lock-in in various Temperature",
+            "Spectroscopy confirms the insulating nature of the C-phase."
+        ])
+#----------------------------------------------------------------------------------------
 print('run iccdw project')
-my_paper = PubProject(fig1, fig2, fig3, fig4)
+
 if __name__ == '__main__':
     my_paper.plot_layouts()
-    my_paper.show()
+    my_paper.create_report(filename="Report_iccdw.pptx")
+    # my_paper.show()
 
 
