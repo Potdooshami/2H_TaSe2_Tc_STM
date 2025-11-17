@@ -43,9 +43,9 @@ def draw_atom(x, y, radius=0.4, color_hex='#4169E1'):
         g = g_base * (1 - factor) + factor * 0.8
         b = b_base * (1 - factor) + factor * 0.8
         r, g, b = max(0, min(r, 1)), max(0, min(g, 1)), max(0, min(b, 1))
-        circle = plt.Circle((x, y), radius * (1 - factor * 0.5), color=(r, g, b), zorder=10)
+        circle = plt.Circle((x, y), radius * (1 - factor * 0.5), color=(r, g, b))
         ax.add_artist(circle)
-    highlight = plt.Circle((x - radius * 0.2, y + radius * 0.2), radius * 0.2, color='white', alpha=0.5, zorder=11)
+    highlight = plt.Circle((x - radius * 0.2, y + radius * 0.2), radius * 0.2, color='white', alpha=0.5)
     ax.add_artist(highlight)
 
 def draw_bond(x, y, r, **kwargs):

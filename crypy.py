@@ -288,11 +288,11 @@ class Crystal2D(TrackedInstance):
 class Collection:
     class Generator:
         @staticmethod
-        def gen_regular_polygon(n,x=0,y=0,r=1,c='blue',phi=0):
+        def gen_regular_polygon(n,x=0,y=0,r=1,c='blue',phi=0,**kwargs):
             angles = np.linspace(0, 2 * np.pi, n+1)[:-1] + phi
             x_vertices = x + r * np.cos(angles)
             y_vertices = y + r * np.sin(angles)
-            return plt.fill(x_vertices, y_vertices, color=c, alpha=1)
+            return plt.fill(x_vertices, y_vertices, color=c, alpha=1,**kwargs)
         @staticmethod
         def gen_hexagon(**kwargs):
             return Collection.Generator.gen_regular_polygon(6,**kwargs)

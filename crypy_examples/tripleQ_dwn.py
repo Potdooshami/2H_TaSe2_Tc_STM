@@ -23,10 +23,11 @@ def q3_DWN(n_dom):
     pv = cp.PrimitiveVector2D(a1,a2)
     bss = cp.Basis2D(pv)
     bss.add_artist(gen_atom_Ta,(p1),label='Ta')
-    bss.add_artist(gen_atom_Se,(p2),label='Se')
+    
     bss.add_artist(gen_bond,(p1,p2),label = 'bond1')
     bss.add_artist(gen_bond,(p1,p3),label = 'bond2')
     bss.add_artist(gen_bond,(p2,p4),label = 'bond3')
+    bss.add_artist(gen_atom_Se,(p2),label='Se')
     lp = cp.LatticePoints2D(pv)
     cry = cp.Crystal2D(bss,lp)
 
