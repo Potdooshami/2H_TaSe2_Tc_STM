@@ -1,5 +1,5 @@
 from crypy_examples.pts_on_poly import lattice_points_in_polygon
-
+import numpy as np
 
 
 def gen_hex(R):

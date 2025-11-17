@@ -143,8 +143,15 @@ my_paper = PubProject(fig1, fig2, fig3, fig4,
             "Spectroscopy confirms the insulating nature of the C-phase."
         ])
 #----------------------------------------------------------------------------------------
+child = my_paper.figs[0].get_child('a')
+child.draw = lambda ax: (
+    ax.imshow(plt.imread('dw3.png')),
+    ax.set_xticks([]),
+    ax.set_yticks([])
+)    
 
 if __name__ == '__main__':
-    my_paper.plot_layouts()
+    # my_paper.plot_layouts()
+    # my_paper.plot_draws()
     # my_paper.show()
     my_paper.create_report(filename="Report_solLatt.pptx")

@@ -27,7 +27,8 @@ xylim = ((-10,10),(-10,10))
 # region LEVEL 1: ATOMIC LATTICE
 pv = cp.PrimitiveVector2D(a1,a2)
 bss = cp.Basis2D(pv)
-gen_atom_Ta = lambda x,y: draw_atom(x, y, radius=r_Ta, color_hex=color_Ta)
+# gen_atom_Ta = lambda x,y: draw_atom(x, y, radius=r_Ta, color_hex=color_Ta)
+gen_atom_Ta = lambda x,y: cp.Collection.Generator.gen_regular_polygon(20,x,y,r=r_Ta,c=color_bond)
 gen_atom_Se = lambda x,y: draw_atom(x, y, radius=r_Se, color_hex=color_Se)
 gen_bond = lambda x,y: draw_bond(x,y,r=r_bond,facecolor=to_rgb(color_bond))
 
@@ -61,10 +62,11 @@ gen_domain = lambda x,y:cry_sup.plot_crystal(x,y)
 # endregion
 
 # region plot
-cry_sup.plot_crystal()
+
 fig,ax  = cry.plot_crystal()
-ax.set_xlim(-8,8)
-ax.set_ylim(-8,8)
+cry_sup.plot_crystal()
+ax.set_xlim(-4,4)
+ax.set_ylim(-4,4)
 ax.set_xticks([])
 ax.set_yticks([])
 # endregion

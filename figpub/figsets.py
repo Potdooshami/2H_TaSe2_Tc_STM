@@ -163,7 +163,7 @@ class PanelChild:
         else:
             self.plot_layout()
 
-
+ 
 class PubFig:
     MM_PER_INCH = 25.4
     WIDTH_2COL = 178
@@ -217,6 +217,23 @@ class PubFig:
             # 모든 자식 패널도 렌더링
             for child in self.children:
                 child.render()
+    def close(self):
+        """
+        Matplotlib Figure를 닫고,
+        Figure와 모든 자식 Panel의 Axes 참조를 None으로 리셋합니다.
+        이를 통해 객체를 재사용(재-렌더링)할 수 있게 됩니다.
+        """
+        if self.fig is not None:
+            # 1. Matplotlib 백엔드에서 창을 닫아 메모리 해제
+            plt.close(self.fig)
+            
+            # 2. 부모(Figure) 참조 리셋
+            self.fig = None
+            self.fignum = None
+            
+            # 3. [핵심] 모든 자식(PanelChild)의 Axes 참조 리셋
+            for child in self.children:
+                child.ax = None
     
     def add_child(self, lbwh=None, label=None, anchor=None, xy=None, wh=None, comment='...', draw=None):
         if lbwh is not None:
@@ -397,22 +414,35 @@ class PubProject:
         
         # --- 2. 이미지 사전 렌더링 (임시 폴더) ---
         with tempfile.TemporaryDirectory() as temp_dir:
-            thumbnail_paths = []
             print(f"리포트 생성 시작... 임시 디렉토리: {temp_dir}")
-            
-            for i, pub_fig in enumerate(self.figs):
-                # 렌더링 및 플로팅
-                pub_fig.render()
-                for child in pub_fig.children:
-                    child.plot_draw()
-                
-                # 임시 파일로 저장
-                thumb_path = os.path.join(temp_dir, f"data_fig_{i+1}.png")
-                pub_fig.fig.savefig(thumb_path, dpi=96, bbox_inches='tight')
-                thumbnail_paths.append(thumb_path)
-                
-                # [중요] 메모리에서 창 닫기
-                plt.close(pub_fig.fig)
+            thumbnail_pathss = []
+            for i_ld in range(2):
+                thumbnail_paths = []                        
+                for i, pub_fig in enumerate(self.figs):
+                    # 렌더링 및 플로팅
+                    pub_fig.render()
+                    for child in pub_fig.children:                        
+                        if i_ld == 0:
+                            child.plot_layout()
+                        elif i_ld == 1:
+                            child.plot_draw()
+                        # child.plot_layout()  # 썸네일은 레이아웃만
+                    
+                    # 임시 파일로 저장
+                    thumb_path = os.path.join(temp_dir, f"data_fig_{i+1}_{i_ld}.png")
+                    pub_fig.fig.savefig(thumb_path, dpi=96, bbox_inches='tight')
+                    print(pub_fig.fig)
+                    # print(pub_fig.fig is None)
+                    # plt.close(pub_fig.fig)  # <--- 메모리 해제
+                    # print(pub_fig.fig is None)
+                    # pub_fig.fig = None  # <--- 메모리 해제
+                    pub_fig.close()  # <--- 메모리 해제
+                    thumbnail_paths.append(thumb_path)
+                    
+                    # [중요] 메모리에서 창 닫기
+                    
+                thumbnail_pathss.append(thumbnail_paths)
+            print(thumbnail_pathss)
             
             print(f"{len(thumbnail_paths)}개의 피겨 썸네일 생성 완료.")
 
@@ -474,74 +504,76 @@ class PubProject:
             TWO_COL_IMG_WIDTH = SLIDE_WIDTH - 2 * MARGIN
 
             for i, pub_fig in enumerate(self.figs):
-                slide = prs.slides.add_slide(prs.slide_layouts[6])
-                thumb_path = thumbnail_paths[i]
                 
-                # 원본 비율 계산 (높이/너비)
-                aspect_ratio = pub_fig.height_u # 원본 종횡비 사용
-
-                # [핵심 조건문]
-                if pub_fig.width_pure > PubFig.WIDTH_1COL:
-                    # 2단 컬럼 (중앙 정렬)
-                    display_width = TWO_COL_IMG_WIDTH
-                    display_width = Cm(pub_fig.width / 10)  # mm -> cm                    
-                    display_height = Cm(pub_fig.height / 10)  # mm -> cm
+                for ii in range(2):
+                    slide = prs.slides.add_slide(prs.slide_layouts[6])
+                    thumb_path = thumbnail_pathss[ii][i]
                     
-                    left = (SLIDE_WIDTH - display_width) / 2 # 중앙
-                    top = MARGIN*2
-                    slide.shapes.add_picture(thumb_path, left, top, width=display_width)
-                    
-                    # 텍스트 위치 (이미지 아래)
-                    text_top = top + display_width + Inches(0.2)
-                    text_left = MARGIN
-                    text_width = TWO_COL_IMG_WIDTH
-                    text_height = Inches(4)
+                    # 원본 비율 계산 (높이/너비)
+                    aspect_ratio = pub_fig.height_u # 원본 종횡비 사용
 
-                else:
-                    # 1단 컬럼 (왼쪽 정렬)
-                    # display_width = ONE_COL_IMG_WIDTH
-                    # display_height = display_width * aspect_ratio * (pub_fig.width / pub_fig.width_pure) # 스케일링 보정
-                    display_width = Cm(pub_fig.width / 10)  # mm -> cm                    
-                    display_height = Cm(pub_fig.height / 10)  # mm -> cm
-                    left = MARGIN # 왼쪽
-                    top = MARGIN*2
-                    slide.shapes.add_picture(thumb_path, left, top, width=display_width)
-                    
-                    # 텍스트 위치 (오른쪽)
-                    text_top = top + display_width*2 + Inches(0.2)
-                    text_left = MARGIN
-                    text_width = SLIDE_WIDTH - text_left - MARGIN
-                    text_height = Inches(10)
+                    # [핵심 조건문]
+                    if pub_fig.width_pure > PubFig.WIDTH_1COL:
+                        # 2단 컬럼 (중앙 정렬)
+                        display_width = TWO_COL_IMG_WIDTH
+                        display_width = Cm(pub_fig.width / 10)  # mm -> cm                    
+                        display_height = Cm(pub_fig.height / 10)  # mm -> cm
+                        
+                        left = (SLIDE_WIDTH - display_width) / 2 # 중앙
+                        top = MARGIN*2
+                        slide.shapes.add_picture(thumb_path, left, top, width=display_width)
+                        
+                        # 텍스트 위치 (이미지 아래)
+                        text_top = top + display_width + Inches(0.2)
+                        text_left = MARGIN
+                        text_width = TWO_COL_IMG_WIDTH
+                        text_height = Inches(4)
 
-                # 텍스트박스 추가
-                txBox = slide.shapes.add_textbox(text_left, text_top, text_width, text_height)
-                tf = txBox.text_frame
-                
-                # Figtitle
-                p = tf.paragraphs[0]
-                p.text = f"Figure {i+1}: {pub_fig.figtitle}"
-                p.font.bold = True
-                p.font.size = Pt(14)
-                
-                # Keyword Info
-                p = tf.add_paragraph()
-                p.text = "Info:"
-                p.font.bold = True
-                p.font.size = Pt(11)
-                for info in pub_fig.keyword_info:
+                    else:
+                        # 1단 컬럼 (왼쪽 정렬)
+                        # display_width = ONE_COL_IMG_WIDTH
+                        # display_height = display_width * aspect_ratio * (pub_fig.width / pub_fig.width_pure) # 스케일링 보정
+                        display_width = Cm(pub_fig.width / 10)  # mm -> cm                    
+                        display_height = Cm(pub_fig.height / 10)  # mm -> cm
+                        left = MARGIN # 왼쪽
+                        top = MARGIN*2
+                        slide.shapes.add_picture(thumb_path, left, top, width=display_width)
+                        
+                        # 텍스트 위치 (오른쪽)
+                        text_top = top + display_width*2 + Inches(0.2)
+                        text_left = MARGIN
+                        text_width = SLIDE_WIDTH - text_left - MARGIN
+                        text_height = Inches(10)
+
+                    # 텍스트박스 추가
+                    txBox = slide.shapes.add_textbox(text_left, text_top, text_width, text_height)
+                    tf = txBox.text_frame
+                    
+                    # Figtitle
+                    p = tf.paragraphs[0]
+                    p.text = f"Figure {i+1}: {pub_fig.figtitle}"
+                    p.font.bold = True
+                    p.font.size = Pt(14)
+                    
+                    # Keyword Info
                     p = tf.add_paragraph()
-                    p.text = info
-                    p.level = 1 # 들여쓰기
-                
-                # Keyword Argument
-                p = tf.add_paragraph()
-                p.text = "Argument:"
-                p.font.bold = True
-                p.font.size = Pt(11)
-                for arg in pub_fig.keyword_argument:
+                    p.text = "Info:"
+                    p.font.bold = True
+                    p.font.size = Pt(11)
+                    for info in pub_fig.keyword_info:
+                        p = tf.add_paragraph()
+                        p.text = info
+                        p.level = 1 # 들여쓰기
+                    
+                    # Keyword Argument
                     p = tf.add_paragraph()
-                    p.text = arg
-                    p.level = 1
+                    p.text = "Argument:"
+                    p.font.bold = True
+                    p.font.size = Pt(11)
+                    for arg in pub_fig.keyword_argument:
+                        p = tf.add_paragraph()
+                        p.text = arg
+                        p.level = 1
 
             # --- 5. 저장 및 열기 ---
             prs.save(filename)

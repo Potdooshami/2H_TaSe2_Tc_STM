@@ -1,6 +1,8 @@
 import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.colors import to_rgb
+import crypy as cp
 
 a1 = [1,0] # lattic unitcell vector 1
 a2 = [-0.5,3**0.5/2] # lattic unitcell vector 2
@@ -9,12 +11,12 @@ p2 = np.array((1,2))/3 # basis point2
 p3=np.array((1,-1))/3  # basis point3
 p4=-p3 # basis point4
 
-color_bond="#A29E9EFF"
+color_bond="#E0E0E0FF"
 color_Se ="#FF6347"
 color_Ta='#4169E1'
 r_Se = .1
 r_Ta = .2
-r_bond = .05
+r_bond = .1
 
 
 def draw_atom(x, y, radius=0.4, color_hex='#4169E1'):
@@ -118,3 +120,7 @@ def draw_bond(x, y, r, **kwargs):
 
     # 7. 현재 축(ax)에 패치 추가
     ax.add_patch(rect)
+gen_atom_Ta_v1 = lambda x,y: draw_atom(x, y, radius=r_Ta, color_hex=color_Ta)
+gen_atom_Ta_v2 = lambda x,y: cp.Collection.Generator.gen_regular_polygon(20,x,y,r=r_Ta,c=color_bond)
+gen_atom_Se = lambda x,y: draw_atom(x, y, radius=r_Se, color_hex=color_Se)
+gen_bond = lambda x,y: draw_bond(x,y,r=r_bond,facecolor=to_rgb(color_bond))
