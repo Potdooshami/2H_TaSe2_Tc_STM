@@ -62,7 +62,7 @@ gen_domain = lambda x,y:cry_sup.plot_crystal(x,y)
 # endregion
 
 # region plot
-
+plt.figure(figsize=(6,6))
 fig,ax  = cry.plot_crystal()
 cry_sup.plot_crystal()
 ax.set_xlim(-4,4)
@@ -71,4 +71,7 @@ ax.set_xticks([])
 ax.set_yticks([])
 # endregion
 if __name__ == "__main__":
-    plt.show()
+    # plt.show()
+    
+    ax.set_position([0,0,1,1])
+    plt.savefig("assets/lattice.png",dpi=200,bbox_inches='tight',pad_inches=0)

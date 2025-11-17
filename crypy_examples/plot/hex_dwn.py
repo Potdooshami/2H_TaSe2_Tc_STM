@@ -3,6 +3,15 @@ import numpy as np
 from matplotlib import pyplot as plt
 from crypy_examples.atom_network import draw_atom, draw_bond
 from crypy_examples.chiral_interlock import lattice_points_in_hex
+from crypy_examples.atom_network import (
+    a1,a2,
+    p1,p2,p3,p4,
+    gen_atom_Se,
+    gen_bond        
+)
+from crypy_examples.atom_network import gen_atom_Ta_v2 as gen_atom_Ta
+
+
 
 
 # region Fundamental Parameters
@@ -13,20 +22,25 @@ p2 = np.array((1,2))/3 # basis point2
 p3=np.array((1,-1))/3  # basis point3
 p4=-p3 # basis point4
 
-n_dom =18 # single Domain's size factor
+n_dom =6 # single Domain's size factor
 n_supsup = 2*3*n_dom-2
 domain_range =  ((-1,1),(-1,1))
 n__ = 2*n_supsup
 latt_range = ((-n__,n__),(-n__,n__))
+
+dw_cntr_index = (1/2,0)
+w_win = 35
+h_win = 40
+
 # endregion
 
 # region class setup for figure
 # region LEVEL 1: ATOMIC LATTICE
 pv = cp.PrimitiveVector2D(a1,a2)
 bss = cp.Basis2D(pv)
-gen_atom_Ta = lambda x,y: draw_atom(x, y, radius=0.2, color_hex='#4169E1')
-gen_atom_Se = lambda x,y: draw_atom(x, y, radius=0.1, color_hex='#FF6347')
-gen_bond = lambda x,y: draw_bond(x,y,r=.05,facecolor=(.7,.7,.7))
+# gen_atom_Ta = lambda x,y: draw_atom(x, y, radius=0.2, color_hex='#4169E1')
+# gen_atom_Se = lambda x,y: draw_atom(x, y, radius=0.1, color_hex='#FF6347')
+# gen_bond = lambda x,y: draw_bond(x,y,r=.05,facecolor=(.7,.7,.7))
 
 
 bss.add_artist(gen_atom_Ta,(p1),label='Ta')
@@ -36,10 +50,10 @@ bss.add_artist(gen_bond,(p1,p3),label = 'bond2')
 bss.add_artist(gen_bond,(p2,p4),label = 'bond3')
 # xylim = ((-10,10),(-10,10))
 
-lp = cp.LatticePoints2D(pv) 
-# lp.generate_points_by_xylim(*xylim)
-lp.generate_points_by_range(*latt_range)
-cry = cp.Crystal2D(bss,lp)
+# lp = cp.LatticePoints2D(pv) 
+# # lp.generate_points_by_xylim(*xylim)
+# lp.generate_points_by_range(*latt_range)
+# cry = cp.Crystal2D(bss,lp)
 # endregion
 
 # region LEVEL 2: CDW 
@@ -74,6 +88,15 @@ bss_supsup.add_artist(gen_domain,(0,0),label='domain')
 lp_supsup =  cp.LatticePoints2D(pv_supsup)
 lp_supsup.generate_points_by_range(*domain_range)
 cry_supsup = cp.Crystal2D(bss_supsup,lp_supsup)
+# region crop window
+cntr = pv_supsup.cal_xy_from_ij(dw_cntr_index)
+cntr =cntr.flatten()
+xlim = (cntr[0]-w_win/2,cntr[0]+w_win/2)
+ylim = (cntr[1]-h_win/2,cntr[1]+h_win/2)
+lp = cp.LatticePoints2D(pv) 
+lp.generate_points_by_xylim(xlim,ylim)
+cry = cp.Crystal2D(bss,lp)
+# endregion
 # endregion
 # endregion
 
@@ -89,8 +112,10 @@ cry_supsup = cp.Crystal2D(bss_supsup,lp_supsup)
 # ax.set_xlim(-8,8)
 # ax.set_ylim(-8,8)
 
-cry_supsup.plot_crystal()
-# cry.plot_crystal()
+cry.plot_crystal()
+fig,ax = cry_supsup.plot_crystal()
+ax.set_xlim(xlim)
+ax.set_ylim(ylim)
 plt.show()
 
 

@@ -143,12 +143,18 @@ my_paper = PubProject(fig1, fig2, fig3, fig4,
             "Spectroscopy confirms the insulating nature of the C-phase."
         ])
 #----------------------------------------------------------------------------------------
-child = my_paper.figs[0].get_child('a')
-child.draw = lambda ax: (
-    ax.imshow(plt.imread('dw3.png')),
-    ax.set_xticks([]),
+# child = my_paper.figs[0].get_child('a')
+def imsert_im(ax,img_path):
+    ax.imshow(plt.imread(img_path))
+    ax.set_xticks([])
     ax.set_yticks([])
-)    
+def set_draw(ind_fig,lbl_panel,img_path):
+         my_paper.figs[ind_fig].get_child(lbl_panel).draw = lambda ax: imsert_im(
+    ax, img_path)
+set_draw(0,'a','assets/lattice.png')
+set_draw(1,'b','assets/dw3_0_False.png')
+set_draw(1,'d','assets/dw3_1_False.png')
+set_draw(1,'f','assets/dw3_2_False.png')
 
 if __name__ == '__main__':
     # my_paper.plot_layouts()
