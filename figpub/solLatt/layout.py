@@ -155,6 +155,7 @@ set_draw(0,'a','assets/lattice.png')
 set_draw(1,'b','assets/dw3_0_False.png')
 set_draw(1,'d','assets/dw3_1_False.png')
 set_draw(1,'f','assets/dw3_2_False.png')
+set_draw(2,'a','assets/vortices.png')
 
 if __name__ == '__main__':
     # my_paper.plot_layouts()

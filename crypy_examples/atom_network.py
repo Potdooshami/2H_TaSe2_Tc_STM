@@ -120,7 +120,10 @@ def draw_bond(x, y, r, **kwargs):
 
     # 7. 현재 축(ax)에 패치 추가
     ax.add_patch(rect)
+def draw_atom_simple(x,y,radius=0.4,color_hex='#4169E1'):
+    cp.Collection.Generator.gen_regular_polygon(20,x,y,r=radius,c=color_hex)
 gen_atom_Ta_v1 = lambda x,y: draw_atom(x, y, radius=r_Ta, color_hex=color_Ta)
-gen_atom_Ta_v2 = lambda x,y: cp.Collection.Generator.gen_regular_polygon(20,x,y,r=r_Ta,c=color_bond)
+gen_atom_Ta_v2 = lambda x,y: draw_atom_simple(x, y, radius=r_Ta, color_hex=color_Ta)
 gen_atom_Se = lambda x,y: draw_atom(x, y, radius=r_Se, color_hex=color_Se)
+gen_atom_Se_simple = lambda x,y: draw_atom_simple(x, y, radius=r_Se, color_hex=color_Se)
 gen_bond = lambda x,y: draw_bond(x,y,r=r_bond,facecolor=to_rgb(color_bond))

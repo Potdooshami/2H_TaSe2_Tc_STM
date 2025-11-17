@@ -9,6 +9,7 @@ from crypy_examples.atom_network import (
     gen_bond        
 )
 from crypy_examples.atom_network import gen_atom_Ta_v2 as gen_atom_Ta
+from crypy_examples.atom_network import gen_atom_Se_simple as gen_atom_Se
 # region fundamental input
 
 # region fundamental input
