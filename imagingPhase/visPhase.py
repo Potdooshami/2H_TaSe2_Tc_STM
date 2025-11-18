@@ -316,10 +316,60 @@ class DWallColoring:
   def show(self):
     plt.imshow(self.rgb)
     plt.axis('off')
-    plt.show()
+    # plt.show()
 
 class DVertexColoring:
-  pass
+  def __init__(self,Info):
+    self.Info = Info
+  @property
+  def baryHAC(self):
+    return self.Info[1]
+  @property
+  def rgb(self):
+    baryHAC = self.baryHAC
+    rgb = self.apply_ternary_colormap(baryHAC)
+    return rgb
+  def show(self):
+    plt.imshow(self.rgb)
+    plt.axis('off')
+  @staticmethod
+  def apply_ternary_colormap(
+    data_array,
+    color1=(1, 1, 1),  # v1=1에 해당하는 색상 (기본값: Red)
+    color2=(0, 1, 0),  # v2=1에 해당하는 색상 (기본값: Green)
+    color3=(1, 0, 1)   # v3=1에 해당하는 색상 (기본값: Blue)
+):
+    """
+    (H, W, 3) 형태의 바리센트릭 좌표 배열에 터너리 컬러맵을 적용합니다.
+
+    Args:
+        data_array (np.ndarray): (H, W, 3) 형태의 입력 배열.
+                                 마지막 축은 (v1, v2, v3) 값을 가집니다.
+        color1 (tuple): v1에 해당하는 RGB 색상.
+        color2 (tuple): v2에 해당하는 RGB 색상.
+        color3 (tuple): v3에 해당하는 RGB 색상.
+
+    Returns:
+        np.ndarray: (H, W, 3) 형태의 RGB 색상 배열.
+    """
+    # 입력 데이터에서 v1, v2, v3 좌표를 분리합니다.
+    v1 = data_array[..., 0]
+    v2 = data_array[..., 1]
+    v3 = data_array[..., 2]
+
+    # 입력된 색상 핸들을 numpy 배열로 변환합니다.
+    c1 = np.array(color1)
+    c2 = np.array(color2)
+    c3 = np.array(color3)
+
+    # 브로드캐스팅을 위해 v1,v2,v3의 차원을 (H,W) -> (H,W,1)로 확장하고
+    # 각 색상과 곱한 뒤 모두 더하여 최종 RGB 값을 계산합니다.
+    rgb_array = (v1[..., np.newaxis] * c1 +
+                 v2[..., np.newaxis] * c2 +
+                 v3[..., np.newaxis] * c3)
+
+    # 부동소수점 오차 등으로 인해 값이 0~1 범위를 벗어날 경우를 대비해 clip 처리합니다.
+    return np.clip(rgb_array, 0, 1)
 class PhaseMapVisualizer:
   pass    
 
