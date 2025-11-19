@@ -385,6 +385,7 @@ class PubProject:
         """운영체제에 맞춰 생성된 파일을 엽니다."""
         try:
             if sys.platform == "win32":
+                print(filepath)
                 os.startfile(filepath)
             elif sys.platform == "darwin": # macOS
                 subprocess.call(["open", filepath])
@@ -401,6 +402,7 @@ class PubProject:
         """
         
         # --- 0. 라이브러리 확인 ---
+        # filename = os.path.join('figpub','reports', filename)
         try:
             Presentation
         except NameError:

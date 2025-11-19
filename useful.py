@@ -394,3 +394,7 @@ def broad_plot(axs, dts, draws):
         
         # 💡 변경된 부분: ax를 직접 인자로 전달
         draw_func(ax, dt)
+def fullax(ax):
+    ax.set_position([0,0,1,1])
+    ax.set_xticks([])
+    ax.set_yticks([])        

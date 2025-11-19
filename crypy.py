@@ -150,6 +150,10 @@ class PrimitiveVector2D(TrackedInstance):
             valid_indices = [i for i in vertex_indices if i != -1]
             return vor.vertices[valid_indices]
         return vor.vertices[vertex_indices]
+    def to_LatticePoints2D(self):
+        return LatticePoints2D(self)
+    def to_Basis2D(self):
+        return Basis2D(self)
                       
 class LatticePoints2D(TrackedInstance):
     def __init__(self,primitive_vector:PrimitiveVector2D):
@@ -171,10 +175,13 @@ class LatticePoints2D(TrackedInstance):
     @property
     def xy(self):
         return self.primitive_vector.cal_xy_from_ij(self.Indices)
-    def plot_scatter(self,**kwargs):
+    def plot_scatter(self,x=0,y=0,**kwargs):
         xy = self.xy
-        plt.scatter(xy[:,0],xy[:,1],**kwargs)
+        plt.scatter(xy[:,0]+x,xy[:,1]+y,**kwargs)
         plt.axis('equal')
+        fig = plt.gcf()
+        ax = plt.gca()        
+        return (fig,ax)
     def plot_text(self,**kwargs):
         xy = self.xy
         str_list = [f'({row[0]},{row[1]})' for row in self.Indices]
