@@ -43,12 +43,12 @@ ax = f.add_child([2*u,0,3*u,3*u],label='g',
             'three jump retrurn')
 ax.reduce(w_reduce=rf,h_reduce=rf,anchor='center')
 xy = ax.get_point('bottom_left')
-f.add_child(anchor='bottom_left',xy=xy,wh=[.25,.25],label='h',
-            comment='<DWN schematic>'
-            ).reduce(w_reduce=rf*2,h_reduce=rf*2,anchor='center')
-f.add_child([4*u,0,u,u],label='g_2',comment='<orderparameter space diagram>').translate(-rf,rf)        
-f.get_child('a').comment ='<topo of a1>'
-f.get_child('b').comment ='<cartoon of a1>'
+# f.add_child(anchor='bottom_left',xy=xy,wh=[.25,.25],label='h',
+#             comment='<DWN schematic>'
+#             ).reduce(w_reduce=rf*2,h_reduce=rf*2,anchor='center')
+f.add_child([4*u,0,u,u],label='h',comment='<orderparameter space diagram>').translate(-rf,rf)        
+f.get_child('a').comment ='<cartoon of a1>'
+f.get_child('b').comment ='<topo of a1>'
 f.get_child('c').comment ='<... of a2>'
 f.get_child('e').comment ='<... of a3>'
     
@@ -152,10 +152,24 @@ def set_draw(ind_fig,lbl_panel,img_path):
          my_paper.figs[ind_fig].get_child(lbl_panel).draw = lambda ax: imsert_im(
     ax, img_path)
 set_draw(0,'a','assets/lattice.png')
-set_draw(1,'b','assets/dw3_0_False.png')
-set_draw(1,'d','assets/dw3_1_False.png')
-set_draw(1,'f','assets/dw3_2_False.png')
+set_draw(1,'a','assets/dw3_0_False.png')
+set_draw(1,'c','assets/dw3_1_False.png')
+set_draw(1,'e','assets/dw3_2_False.png')
+set_draw(1,'b','assets/dw_r_topo.png')
+set_draw(1,'d','assets/dw_g_topo.png')
+set_draw(1,'f','assets/dw_b_topo.png')
+
+
+set_draw(1,'g','assets/solLatt_shiftmap.png')
 set_draw(2,'a','assets/vortices.png')
+
+set_draw(2,'b','assets/vor1_topo.png')
+set_draw(2,'c','assets/vor1_dw.png')
+set_draw(2,'d','assets/vor1_vertex.png')
+set_draw(2,'e','assets/vor2_topo.png')
+set_draw(2,'f','assets/vor2_dw.png')
+set_draw(2,'g','assets/vor2_vertex.png')
+
 
 if __name__ == '__main__':
     # my_paper.plot_layouts()

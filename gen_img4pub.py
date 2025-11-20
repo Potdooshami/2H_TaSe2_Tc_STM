@@ -11,18 +11,35 @@ for idt in range(len(df)):
     print(idt)
     phiPrinters.append(vp.phiPrinter(pa[0][idt]))
 
+class imgen:
+    phiPrinters = phiPrinters
+    df = df
+    @staticmethod
+    def topo(idt):
+        img = imgen.df['arr_clns'][idt]
+        plt.imshow(img,cmap='afmhot')
+        auto199()
+    @staticmethod
+    def dw(idt):
+        Info = imgen.phiPrinters[idt].Info
+        phase = imgen.phiPrinters[idt].phase
+        vp.DWallColoring(Info,phase).show()
+    @staticmethod
+    def vertex(idt):
+        Info = imgen.phiPrinters[idt].Info
+        vp.DVertexColoring(Info).show()
+
+
+
 if __name__ == '__main__':
     for idt in range(len(df)):
         plt.figure()    
-        img =df['arr_clns'][idt]
-        plt.imshow(img,cmap='afmhot')
-        auto199()
-
-        plt.figure()    
-        Info = phiPrinters[idt].Info
-        phase = phiPrinters[idt].phase  
-        vp.DWallColoring(Info,phase).show()
+        imgen.topo(idt)
 
         plt.figure()
-        rgb = vp.DVertexColoring(Info).show()    
+        imgen.dw(idt)
+
+        plt.figure()
+        imgen.vertex(idt)
+    # imgen.topo(0)
     plt.show()

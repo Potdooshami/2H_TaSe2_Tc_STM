@@ -173,7 +173,31 @@ my_paper = PubProject(fig1, fig2, fig3, fig4,
         ])
 #----------------------------------------------------------------------------------------
 print('run iccdw project')
+def imsert_im(ax, img_path, zoom=1.0):
+    img = plt.imread(img_path)
+    ax.imshow(img)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    
+    # 이미지 크기 및 중심 좌표 구하기
+    h, w = img.shape[:2]
+    cx, cy = w / 2, h / 2
+    
+    # 줌 배율에 맞춰 보여줄 영역 계산
+    dx = w / (2 * zoom)
+    dy = h / (2 * zoom)
+    
+    # 중심 기준으로 축 범위 설정
+    ax.set_xlim(cx - dx, cx + dx)
+    # imshow는 보통 y축이 위에서 아래로 증가하므로(top=0), 큰 값이 아래쪽입니다.
+    ax.set_ylim(cy + dy, cy - dy) 
 
+def set_draw(ind_fig, lbl_panel, img_path, zoom=1.0):
+    my_paper.figs[ind_fig].get_child(lbl_panel).draw = lambda ax: imsert_im(ax, img_path, zoom)
+
+# 예시: 2배 확대 (zoom=2)
+set_draw(3, 'a', 'assets/iccdw_dot.png', zoom=1.8)
+set_draw(3, 'b', 'assets/ccdw_dot.png', zoom=1.8)
 if __name__ == '__main__':
     my_paper.plot_layouts()
     my_paper.create_report(filename="Report_iccdw.pptx")
