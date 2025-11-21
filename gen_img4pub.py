@@ -23,6 +23,12 @@ class imgen:
         plt.imshow(img,cmap='afmhot')
         auto199()
     @staticmethod
+    def domain(idt):
+        Info = imgen.phiPrinters[idt].Info
+        phase = imgen.phiPrinters[idt].phase
+        vp.DomainColoring(Info).show()
+        
+    @staticmethod
     def dw(idt):
         Info = imgen.phiPrinters[idt].Info
         phase = imgen.phiPrinters[idt].phase

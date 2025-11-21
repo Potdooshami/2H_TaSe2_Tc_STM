@@ -29,11 +29,17 @@ cw_b.set_by_anchor(dw_b,100)
 
 cw_all = [cw_vr,cw_vl,cw_r,cw_g,cw_b]
 
+fig = plt.figure(figsize=(5,5))
+imgen.domain(idt)
+ax = plt.gca()
+fullax()
+savepng(fig,"segment9")
 
-
+fig = plt.figure(figsize=(5,5))
 imgen.dw(idt)
 ax = plt.gca()
 fullax()
+savepng(fig,"solLatt_shiftmap_noCrop")
 cw_vr.ax_cropbox()
 cw_vl.ax_cropbox()
 cw_r.ax_cropbox()
@@ -59,7 +65,7 @@ for cw_v_fcs,nm_obj in zip(cw_all,nms_obj):
         fullax()
         cw_v_fcs.ax_xylims()    
         savepng(fig,nm_obj+"_"+nm_fcn)
-breakpoint()
+
 
 
 
