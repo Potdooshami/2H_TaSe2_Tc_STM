@@ -158,6 +158,7 @@ set_draw(1,'e','assets/dw3_2_False.png')
 set_draw(1,'b','assets/dw_r_topo.png')
 set_draw(1,'d','assets/dw_g_topo.png')
 set_draw(1,'f','assets/dw_b_topo.png')
+set_draw(1,'h','assets/dwn_toon.png')
 
 
 set_draw(1,'g','assets/solLatt_shiftmap.png')

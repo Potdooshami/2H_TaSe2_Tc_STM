@@ -6,9 +6,9 @@ import crypy as cp
 
 a1 = [1,0] # lattic unitcell vector 1
 a2 = [-0.5,3**0.5/2] # lattic unitcell vector 2
-p1 = np.array((2,1))/3 # basis point1
-p2 = np.array((1,2))/3 # basis point2
-p3=np.array((1,-1))/3  # basis point3
+p1 = -np.array((2,1))/3 # basis point1
+p2 = -np.array((1,2))/3 # basis point2
+p3=-np.array((1,-1))/3  # basis point3
 p4=-p3 # basis point4
 
 color_bond="#E0E0E0FF"
@@ -124,6 +124,8 @@ def draw_atom_simple(x,y,radius=0.4,color_hex='#4169E1'):
     cp.Collection.Generator.gen_regular_polygon(20,x,y,r=radius,c=color_hex)
 gen_atom_Ta_v1 = lambda x,y: draw_atom(x, y, radius=r_Ta, color_hex=color_Ta)
 gen_atom_Ta_v2 = lambda x,y: draw_atom_simple(x, y, radius=r_Ta, color_hex=color_Ta)
+gen_atom_Ta_hidden = lambda x,y: draw_atom_simple(x, y, radius=r_Ta, color_hex=to_rgb(color_bond))
 gen_atom_Se = lambda x,y: draw_atom(x, y, radius=r_Se, color_hex=color_Se)
 gen_atom_Se_simple = lambda x,y: draw_atom_simple(x, y, radius=r_Se, color_hex=color_Se)
+gen_atom_Se_hidden = lambda x,y: draw_atom_simple(x, y, radius=r_Se, color_hex=to_rgb(color_bond))
 gen_bond = lambda x,y: draw_bond(x,y,r=r_bond,facecolor=to_rgb(color_bond))

@@ -8,7 +8,7 @@ from crypy_examples.atom_network import (
     gen_atom_Se,
     gen_bond        
 )
-from crypy_examples.atom_network import gen_atom_Ta_v2 as gen_atom_Ta
+from crypy_examples.atom_network import gen_atom_Ta_hidden as gen_atom_Ta
 from crypy_examples.atom_network import gen_atom_Se_simple as gen_atom_Se
 # region fundamental input
 
@@ -35,9 +35,12 @@ def q3_DWN(n_dom):
     pv_sup = pv.get_super_structure(3,3)
     bss_sup = cp.Basis2D(pv_sup)
     gen_CDW = lambda xxx,yyy: plt.fill(xxx,yyy,"y",alpha=.3)
-    cdw_p1 = (2/3,1/3)
-    cdw_p2 = (-1/3,1/3)
-    cdw_p3 = (-1/3,-2/3)
+    # cdw_p1 = (2/3,1/3)
+    # cdw_p2 = (-1/3,1/3)
+    # cdw_p3 = (-1/3,-2/3)
+    cdw_p1 = (-2/3,-1/3)
+    cdw_p2 = (1/3,-1/3)
+    cdw_p3 = (1/3,2/3)
     cdw_ps = (cdw_p1,cdw_p2,cdw_p3)
     bss_sup.add_artist(gen_CDW,cdw_ps,label='CDW')
     lp_sup = cp.LatticePoints2D(pv_sup) 

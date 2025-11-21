@@ -317,7 +317,7 @@ class DWallColoring:
     plt.imshow(self.rgb)
     plt.axis('off')
     # plt.show()
-
+from crypy_examples.dwn_toon import CLR_NODE
 class DVertexColoring:
   def __init__(self,Info):
     self.Info = Info
@@ -336,8 +336,8 @@ class DVertexColoring:
   def apply_ternary_colormap(
     data_array,
     color1=(1, 1, 1),  # v1=1에 해당하는 색상 (기본값: Red)
-    color2=(0, 1, 0),  # v2=1에 해당하는 색상 (기본값: Green)
-    color3=(1, 0, 1)   # v3=1에 해당하는 색상 (기본값: Blue)
+    color2=CLR_NODE[0,:],  # v2=1에 해당하는 색상 (기본값: Green)
+    color3=CLR_NODE[1,:],   # v3=1에 해당하는 색상 (기본값: Blue)
 ):
     """
     (H, W, 3) 형태의 바리센트릭 좌표 배열에 터너리 컬러맵을 적용합니다.
