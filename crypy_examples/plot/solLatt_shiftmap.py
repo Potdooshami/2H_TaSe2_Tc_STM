@@ -1,7 +1,7 @@
 from gen_img4pub import (
     imgen
 )
-from imagingPhase import visPhase as vp
+# from imagingPhase import visPhase as vp
 from matplotlib import pyplot as plt
 from useful import (fullax, savepng,CropWindow)
 idt = 0
@@ -12,7 +12,7 @@ xlimylim_DVL = ((1860,1990),(260,390))
 dw_r = (1142,1496)
 dw_g= (1708,202)
 dw_b = (1352,173)
-
+breakpoint()
 cw_vr = CropWindow()
 cw_vr.set_xlimylim(*xlimylim_DVR)
 cw_vl = CropWindow()
@@ -42,16 +42,16 @@ fullax()
 savepng(fig,"solLatt_shiftmap_noCrop")
 cw_vr.ax_cropbox()
 cw_vl.ax_cropbox()
-cw_r.ax_cropbox()
-cw_g.ax_cropbox()
-cw_b.ax_cropbox()
+cw_r.ax_cropbox(linestyles='--')
+cw_g.ax_cropbox(linestyles='--')
+cw_b.ax_cropbox(linestyles='--')
 savepng(fig,"solLatt_shiftmap")
 #토포그래피 domain 근접 크롭
 #토포그래피 dw 크롭3
 # 볼텍스 rL크롭 x 토포,phase,vortex
 
     
-
+breakpoint()
 nms_obj = ['vor1','vor2','dw_r','dw_g','dw_b']
 fncs = [lambda: imgen.topo(idt),
  lambda: imgen.dw(idt),

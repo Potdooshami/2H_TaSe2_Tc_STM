@@ -208,7 +208,7 @@ class DomainColoring:
   def show(self):
     plt.imshow(self.phase9)
     plt.axis('off')
-    plt.show()
+    # plt.show()
   
   @staticmethod
   def _get_z3z3hex(Info):
