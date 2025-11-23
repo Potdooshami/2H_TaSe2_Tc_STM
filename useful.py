@@ -819,6 +819,9 @@ class CropWindow:
         """
         self._xy_01[0] = np.array(xlim)
         self._xy_01[1] = np.array(ylim)
+        # self._xy_01[1] = np.array(self._xy_01[1])[::-1]
+    def set_yflip(self):
+        self._xy_01[1] = np.array(self._xy_01[1])[::-1]
     def set_by_anchor(self,xy,wh,anchor='center'):
         """
         Sets the region centered around a specific anchor point.
@@ -848,6 +851,10 @@ class CropWindow:
         """Returns the y-axis range (min, max)."""
         return self._xy_01[1]
     @property
+    def ylim_flip(self):
+        """Returns the y-axis range (min, max)."""
+        return self._xy_01[1][::-1]
+    @property
     def wh(self):
         """Returns the width and height of the region."""
         return self._xy_01[:,1] - self._xy_01[:,0]
@@ -858,18 +865,18 @@ class CropWindow:
         Default is 'bottom_left' (the bottom-left corner of the rectangle).
         """
         return self._xy_01[:,0] + self.anchor_map[anchor] * self.wh
-    @property
+    # @property
     def rect(self,**kwargs):
         """Returns a matplotlib.patches.Rectangle object representing the current region."""
-        return patches.Rectangle(self.xy,self.wh[0],self.wh[1],fill=False)
+        return patches.Rectangle(self.xy,self.wh[0],self.wh[1],fill=False,**kwargs)
     def ax_xylims(self,ax=None):
         """Applies the current region as the display range (xlim, ylim) to a Matplotlib Axes."""
         if ax is None:
             ax = plt.gca()
         ax.set_xlim(self.xlim)
-        ax.set_ylim(self.ylim)
+        ax.set_ylim(self.ylim_flip)
     def ax_cropbox(self,ax=None,**kwargs):
         """Draws a rectangle box representing the current region on a Matplotlib Axes."""
         if ax is None:
             ax = plt.gca()
-        ax.add_patch(self.rect)
+        ax.add_patch(self.rect(**kwargs))
