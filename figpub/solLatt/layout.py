@@ -152,9 +152,11 @@ def set_draw(ind_fig,lbl_panel,img_path):
          my_paper.figs[ind_fig].get_child(lbl_panel).draw = lambda ax: imsert_im(
     ax, img_path)
 set_draw(0,'a','assets/lattice.png')
+set_draw(0,'b','assets/domain.png')
+
 set_draw(1,'a','assets/dw3_0_False.png')
-set_draw(1,'c','assets/dw3_1_False.png')
-set_draw(1,'e','assets/dw3_2_False.png')
+set_draw(1,'c','assets/dw3_2_False.png')
+set_draw(1,'e','assets/dw3_1_False.png')
 set_draw(1,'b','assets/dw_r_topo.png')
 set_draw(1,'d','assets/dw_g_topo.png')
 set_draw(1,'f','assets/dw_b_topo.png')
@@ -164,12 +166,13 @@ set_draw(1,'h','assets/dwn_toon.png')
 set_draw(1,'g','assets/solLatt_shiftmap.png')
 set_draw(2,'a','assets/vortices.png')
 
-set_draw(2,'b','assets/vor1_topo.png')
-set_draw(2,'c','assets/vor1_dw.png')
-set_draw(2,'d','assets/vor1_vertex.png')
-set_draw(2,'e','assets/vor2_topo.png')
-set_draw(2,'f','assets/vor2_dw.png')
-set_draw(2,'g','assets/vor2_vertex.png')
+set_draw(2,'b','assets/vor2_topo.png')
+set_draw(2,'c','assets/vor2_dw.png')
+set_draw(2,'d','assets/vor2_vertex.png')
+
+set_draw(2,'e','assets/vor1_topo.png')
+set_draw(2,'f','assets/vor1_dw.png')
+set_draw(2,'g','assets/vor1_vertex.png')
 
 
 if __name__ == '__main__':

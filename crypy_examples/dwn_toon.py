@@ -2,7 +2,7 @@ import numpy as np
 import crypy as cp
 import math
 import matplotlib.pyplot as plt
-from useful import fullax,savepng
+from useful import fullax,savepng,CropWindow
 CLR_EDGE = np.eye(3)
 CLR_NODE = np.array([(255, 165, 0),(0, 127, 255)])/256
 def gen_directional_line(xx,yy,c,n=10,sharpness=1,biasness=0):
@@ -110,4 +110,30 @@ if __name__ == '__main__':
     ax.set_ylim(-2,2)
     fullax(ax)
     savepng(fig,'dwn_toon')
+    #----------------------
+    wh_vor = .7
+    wh_dw = .95
+    wh_ben = 1.6
+    xy1 = pv_dwdv.cal_xy_from_ij([1/2,0])
+    xy2 = pv_dwdv.cal_xy_from_ij([0,1/2])
+    xy3 = pv_dwdv.cal_xy_from_ij([-1/2,-1/2])
+    xya = pv_dwdv.cal_xy_from_ij([1/3,-1/3])
+    xyb = pv_dwdv.cal_xy_from_ij([-1/3,1/3])
+    xy0 = pv_dwdv.cal_xy_from_ij([0,0])
+    xyList = [xy1,xy2,xy3,xya,xyb,xy0]
+    whList =[wh_dw,wh_dw,wh_dw,wh_vor,wh_vor,wh_ben]
+    nmUnqs =['dw1','dw2','dw3','vor1','vor2','ben'] 
+    # fig.set_size_inches(4,4)
+    for xy,wh,nmUnq in zip(xyList,whList,nmUnqs):
+        fig.set_size_inches(wh*1,wh*1)
+        cw = CropWindow()
+        cw.set_by_anchor(xy,wh)
+        cw.ax_xylims(ax)
+        fullax(ax)
+        savepng(fig,'dwn_toon_test_'+nmUnq)
     # plt.show()
+    # savepng(fig,'dwn_toon_test')
+    
+    
+
+    

@@ -297,21 +297,24 @@ Xs, Ys = circular_shift_max_half_distance(X, Y)
 
 
 
-x =df.iloc[ind]['X']
-y = df.iloc[ind]['Y']
-x,y = circular_shift_max_half_distance(x,y)
-x = symmetric_average(x)
-y = symmetric_average(y)
+for ind in range(21):# x = x[0:len(x)//2]        # y = y[0:len(y)//2]
+    x = df.iloc[ind]['X']
+    y = df.iloc[ind]['Y']
+    x,y = circular_shift_max_half_distance(x,y)
+    x = symmetric_average(x)
+    y = symmetric_average(y)
+    df.iloc[ind]['X'] = x
+    df.iloc[ind]['Y'] = y
 
-breakpoint()
 if __name__ == '__main__':
-    plt.imshow(lbl)
-    for ind in range(21):# x = x[0:len(x)//2]        # y = y[0:len(y)//2]
-        plt.plot(x,y)
-        H, W = lbl.shape
-        plt.xlim(0,H)
-        plt.ylim(W,0)
-    plt.show()
+    print(df)
+    # plt.imshow(lbl)
+    
+    #     plt.plot(x,y)
+    #     H, W = lbl.shape
+    #     plt.xlim(0,H)
+    #     plt.ylim(W,0)
+    # plt.show()
 # print(edges_by_pair)
 # print(boundary_edges[0])
 # for ind in range(5):

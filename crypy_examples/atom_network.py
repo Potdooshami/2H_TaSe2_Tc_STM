@@ -6,9 +6,9 @@ import crypy as cp
 
 a1 = [1,0] # lattic unitcell vector 1
 a2 = [-0.5,3**0.5/2] # lattic unitcell vector 2
-p1 = -np.array((2,1))/3 # basis point1
-p2 = -np.array((1,2))/3 # basis point2
-p3=-np.array((1,-1))/3  # basis point3
+p1 = np.array((2,1))/3 # basis point1
+p2 = np.array((1,2))/3 # basis point2
+p3=np.array((1,-1))/3  # basis point3
 p4=-p3 # basis point4
 
 color_bond="#E0E0E0FF"
