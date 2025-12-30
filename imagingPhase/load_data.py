@@ -13,6 +13,7 @@ df = pd.read_excel(fnTbl,engine='openpyxl')
 df['fileName_no_ext'] = df['fileName_corrected_ntn'].str.replace('.sxm', '', regex=False)
 df = df.set_index('fileName_no_ext')
 dfCrrent =df.loc[files_no_ext]
+print(dfCrrent)
 dfCrrent = dfCrrent.iloc[[0,1,2,3,4,6,7,8]] #gwyddion files only
 
 
