@@ -15,6 +15,7 @@ testModule.ipynb
 xx.py
 xx.py
 *.pyc
+*.svg
 testmpl.py
 pa.pkl
 __pycache__/useful.cpython-312.pyc
