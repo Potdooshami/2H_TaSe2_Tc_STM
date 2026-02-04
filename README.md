@@ -8,8 +8,8 @@
 | 3. Project Infrastructure & Workflow | 1) File system, 2) version control, 3) documentation standards.      |
 
 # 1. Analytical Explorations
-1.1 [Understading spatial lock-in tequenic](spatial_lockinTest.ipynb)  
-1.2 Workflow of extracting phase map using spatial lock-in tecnique
+1.1 [Understading spatial lock-in tequenique](z01_spatial_lockinTest.ipynb)  
+1.2 [Workflow of extracting phase map using spatial lock-in tecnique](Diagram4Refactoring.png)
 
 # 2. Key Findings
 2.1 Soliton Network  
