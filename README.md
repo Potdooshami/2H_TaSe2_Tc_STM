@@ -9,8 +9,8 @@
 
 # 1. Analytical Explorations
 1.1 [Understading spatial lock-in tequenique](z01_spatial_lockinTest.ipynb)  
-1.2 [Workflow of extracting phase map using spatial lock-in tecnique](Diagram4Refactoring.png)
-
+1.2 [Workflow of extracting phase map using spatial lock-in tecnique](Diagram4Refactoring.png)  
+1.3 [Phase map extraction process using actual data](docs/overallprocess.md)
 # 2. Key Findings
 2.1 Soliton Network  
 2.2 [Mcmillar's ICCDW transition](docs/ICCDW_transition/index.md)  
