@@ -9,6 +9,7 @@
 | prep     | Data preprocessing                                                 | `which file or schema`                              |
 | log_anal | Logic for analysis                                                 | `which file` which function                         |
 | log_vis  | Logic for visualization                                            | `which file` which function                         |
+| log_mod  | Modify preestablished logic(not establishing new logic)            | `which file` which function                         |
 | test     | Test the rawdata or logic for internal check                       | `which data`,`which logic`                          |
 | pub      | Publish the result                                                 | `which data`,`which logic`,`saved as`               |
 
