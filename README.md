@@ -1,5 +1,11 @@
-# 0. Project Overview
+# 0. Overview
 - 2H-TaSe2's STM data analysis done by [potdooshami](https://github.com/Potdooshami?tab=overview&from=2025-09-01&to=2025-09-29).
+
+Purpose of this repo is  
+1) **Archive**: Safe storage of analysis codes and experimental logs.
+2) **Standardization**: Defining a unified workflow for extracting and interpreting the raw data.
+3) **Knowledge Synthesis**: Consolidating figures and insights.
+
 
 |                                      | Focus                                                                |
 | ------------------------------------ | -------------------------------------------------------------------- |
