@@ -18,9 +18,9 @@ class imgen:
     phiPrinters = phiPrinters
     df = df
     @staticmethod
-    def topo(idt):
+    def topo(idt,cmap = 'afmhot'):
         img = imgen.df['arr_clns'][idt]
-        plt.imshow(img,cmap='afmhot')
+        plt.imshow(img,cmap=cmap)
         auto199()
     @staticmethod
     def domain(idt):
