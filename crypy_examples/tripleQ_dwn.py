@@ -5,11 +5,12 @@ from crypy_examples.chiral_interlock import lattice_points_in_hex
 from crypy_examples.atom_network import (
     a1,a2,
     p1,p2,p3,p4,
-    gen_atom_Se,
     gen_bond        
 )
-from crypy_examples.atom_network import gen_atom_Ta_hidden as gen_atom_Ta
-from crypy_examples.atom_network import gen_atom_Se_simple as gen_atom_Se
+from crypy_examples.atom_network import gen_atom_Ta_vHA as gen_atom_Ta
+from crypy_examples.atom_network import gen_atom_Se_vHA as gen_atom_Se
+
+from crypy_examples.atom_network import gen_bond_vHA as gen_bond
 # region fundamental input
 
 # region fundamental input
@@ -23,12 +24,13 @@ def q3_DWN(n_dom):
     """
     pv = cp.PrimitiveVector2D(a1,a2)
     bss = cp.Basis2D(pv)
-    bss.add_artist(gen_atom_Ta,(p1),label='Ta')
     
     bss.add_artist(gen_bond,(p1,p2),label = 'bond1')
     bss.add_artist(gen_bond,(p1,p3),label = 'bond2')
     bss.add_artist(gen_bond,(p2,p4),label = 'bond3')
+    bss.add_artist(gen_atom_Ta,(p1),label='Ta')
     bss.add_artist(gen_atom_Se,(p2),label='Se')
+    
     lp = cp.LatticePoints2D(pv)
     cry = cp.Crystal2D(bss,lp)
 

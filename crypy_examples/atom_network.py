@@ -129,3 +129,14 @@ gen_atom_Se = lambda x,y: draw_atom(x, y, radius=r_Se, color_hex=color_Se)
 gen_atom_Se_simple = lambda x,y: draw_atom_simple(x, y, radius=r_Se, color_hex=color_Se)
 gen_atom_Se_hidden = lambda x,y: draw_atom_simple(x, y, radius=r_Se, color_hex=to_rgb(color_bond))
 gen_bond = lambda x,y: draw_bond(x,y,r=r_bond,facecolor=to_rgb(color_bond))
+
+
+
+color_Se_HA = [254,164,0]
+color_Ta_HA = [0, 176, 240]
+hexer =  lambda rgb: '#{:02x}{:02x}{:02x}'.format(*rgb)
+gen_atom_Ta_vHA = lambda x,y: draw_atom(x, y, radius=r_Ta*.6*1.5, color_hex=hexer(color_Ta_HA))
+gen_atom_Se_vHA = lambda x,y: draw_atom(x, y, radius=r_Se*1.5, color_hex=hexer(color_Se_HA))
+gen_atom_Ta_vHA_simple = lambda x,y: draw_atom_simple(x, y, radius=r_Ta*.6*1.5, color_hex=hexer(color_Ta_HA))
+gen_atom_Se_vHA_simple = lambda x,y: draw_atom_simple(x, y, radius=r_Se*1.5, color_hex=hexer(color_Se_HA))
+gen_bond_vHA = lambda x,y: draw_bond(x,y,r=r_bond*.6,facecolor=to_rgb(color_bond))
