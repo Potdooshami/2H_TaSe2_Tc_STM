@@ -7,19 +7,20 @@ Purpose of this repo is
 3) **Knowledge Synthesis**: Consolidating figures and insights.
 
 
-|                                      | Focus                                                                |
-| ------------------------------------ | -------------------------------------------------------------------- |
-| 1. Analytical Explorations           | 1) Diverse data processing, 2) visualization, 3) diverging insights. |
-| 2. Key Findings                      | 1) Knowledge extraction, 2) core results, 3) final conclusions.      |
-| 3. Project Infrastructure & Workflow | 1) File system, 2) version control, 3) documentation standards.      |
+|                                      | Focus                                                                             |
+| ------------------------------------ | --------------------------------------------------------------------------------- |
+| 1. Analytical Explorations           | 1) Various data processing, 2) Visualization for insignts, 3) diverging insights. |
+| 2. Key Findings                      | 1) Knowledge extraction, 2) core results, 3) final conclusions.                   |
+| 3. Project Infrastructure & Workflow | 1) File system, 2) version control, 3) documentation standards.                   |
 
 # 1. Analytical Explorations
 1.1 [Understading spatial lock-in tequenique](z01_spatial_lockinTest.ipynb)  
-1.2 [Workflow of extracting phase map using spatial lock-in tecnique](Diagram4Refactoring.png)  
-1.3 [Phase map extraction process using actual data](docs/overallprocess.md)
+1.2 [Workflow of image processing](Diagram4Refactoring.png)  
+1.3 [Phase map extraction process using actual data](docs/overallprocess.md)  
+1.4 [$T$-dependency:(1)Topographic , (2)FFT , (3)Autocorrelation , (4)Phase map](docs/ICCDW_transition/index.md)
 # 2. Key Findings
 2.1 Soliton Network  
-2.2 [Mcmillar's ICCDW transition](docs/ICCDW_transition/index.md)  
+2.2 Mcmillar's ICCDW transition  
 3.3 Topoligical point defect
 
 
