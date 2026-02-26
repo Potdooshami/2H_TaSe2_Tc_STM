@@ -17,7 +17,7 @@ Purpose of this repo is
 1.1 [Understading spatial lock-in tequenique](z01_spatial_lockinTest.ipynb)  
 1.2 [Workflow of image processing](Diagram4Refactoring.png)  
 1.3 [Phase map extraction process using actual data](docs/overallprocess.md)  
-1.4 [$T$-dependency:(1)Topographic , (2)FFT , (3)Autocorrelation , (4)Phase map](docs/ICCDW_transition/index.md)
+1.4 [$T$-dependency:(1)Topography , (2)FFT , (3)Autocorrelation , (4)Phase map](docs/ICCDW_transition/index.md)
 # 2. Key Findings
 2.1 Soliton Network  
 2.2 Mcmillar's ICCDW transition  
