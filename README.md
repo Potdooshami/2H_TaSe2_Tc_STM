@@ -1,6 +1,6 @@
 # 0. Overview
-2H-TaSe2's STM data analysis done by [potdooshami](https://github.com/Potdooshami?tab=overview&from=2025-09-01&to=2025-09-29).
-
+<img width="1455" height="1134" alt="image" src="https://github.com/user-attachments/assets/7cca8d1d-bcc8-4e7a-99fc-de84c69ee769" />
+This repository contains the comprehensive data analysis pipeline for scanning tunneling microscopy (STM) measurements of $2H$-TaSe$_2$. It documents the complete workflow: processing raw atomic-scale topography, extracting signals from instrumental noise, and conducting quantitative analysis to derive physical insights.
 #### Purpose of this repo is  
 1) **Archive**: Safe storage of analysis codes and experimental logs.
 2) **Standardization**: Defining a unified workflow for extracting and interpreting the raw data.
@@ -24,8 +24,8 @@ The current codebase and data have become significantly vast and complex. This d
 1.4 [Temperature dependency:(1)Topography , (2)FFT , (3)Autocorrelation , (4)Phase map](docs/ICCDW_transition/index.md)
 # 2. Key Findings
 2.1 Soliton Network  
-2.2 Mcmillar's ICCDW transition  
-3.3 Topoligical point defect
+2.2 Normal-Incommensurate transition  
+3.3 Topological point defect
 
 
 # 3. Project Managing
