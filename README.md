@@ -1,6 +1,7 @@
 # 0. Overview
 <img width="1455" height="1134" alt="image" src="https://github.com/user-attachments/assets/7cca8d1d-bcc8-4e7a-99fc-de84c69ee769" />
 This repository contains the comprehensive data analysis pipeline for scanning tunneling microscopy (STM) measurements of $2H$-TaSe$_2$. It documents the complete workflow: processing raw atomic-scale topography, extracting signals from instrumental noise, and conducting quantitative analysis to derive physical insights.
+
 #### Purpose of this repo is  
 1) **Archive**: Safe storage of analysis codes and experimental logs.
 2) **Standardization**: Defining a unified workflow for extracting and interpreting the raw data.
