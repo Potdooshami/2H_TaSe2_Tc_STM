@@ -293,6 +293,101 @@ class Crystal2D(TrackedInstance):
         return (f,ax)
 
 class Collection:
+    def plot_plane_wave_lines(
+        k,
+        length=10,
+        index_range=(-10, 10),
+        origin=(0, 0),
+        color='black',
+        ax=None
+    ):
+        """
+        Plot plane wave phase lines (k · r = c) for a 2D covector.
+
+        Parameters
+        ----------
+        k : list, tuple, np.ndarray
+            2D covector (kx, ky)
+        length : float, optional
+            Half-length of each line segment (default: 10)
+        index_range : tuple(int, int), optional
+            Range of phase indices (c values), inclusive (default: (-10, 10))
+        origin : tuple(float, float), optional
+            Shifted origin (default: (0, 0))
+        color : str or list-like, optional
+            Line color. Can be:
+            - single color string (e.g., 'black', 'red')
+            - list/array of colors for each line
+        ax : matplotlib.axes.Axes, optional
+            Existing axes to draw on
+
+        Returns
+        -------
+        ax : matplotlib.axes.Axes
+        lines : list of Line2D objects
+        """
+
+        # Convert input to numpy array
+        k = np.asarray(k, dtype=float)
+        if k.shape != (2,):
+            raise ValueError("k must be a 2D vector with 2 components.")
+
+        kx, ky = k
+        x0, y0 = origin
+
+        # Create axis if not provided
+        if ax is None:
+            fig, ax = plt.subplots()
+
+        # Reject zero covector
+        if np.linalg.norm(k) == 0:
+            raise ValueError("Zero covector is not allowed.")
+
+        # Direction vector of the line (perpendicular to k)
+        direction = np.array([-ky, kx])
+        direction = direction / np.linalg.norm(direction)
+
+        i_min, i_max = index_range
+        indices = list(range(i_min, i_max + 1))
+
+        lines = []
+
+        for idx, i in enumerate(indices):
+            c = i
+
+            # Shifted phase due to origin: k·(r - origin) = c
+            c_shifted = c + kx * x0 + ky * y0
+
+            # Find a base point on the line
+            if abs(ky) > 1e-8:
+                x_base = 0
+                y_base = c_shifted / ky
+            else:
+                x_base = c_shifted / kx
+                y_base = 0
+
+            base_point = np.array([x_base, y_base])
+
+            # Create two endpoints of the line segment
+            p1 = base_point + length * direction
+            p2 = base_point - length * direction
+
+            # Handle color (single or per-line)
+            if isinstance(color, (list, tuple, np.ndarray)):
+                line_color = color[idx % len(color)]
+            else:
+                line_color = color
+
+            line, = ax.plot(
+                [p1[0], p2[0]],
+                [p1[1], p2[1]],
+                color=line_color
+            )
+
+            lines.append(line)
+        ax.set_aspect('equal')
+        return ax, lines
+
     class Generator:
         @staticmethod
         def gen_regular_polygon(n,x=0,y=0,r=1,c='blue',phi=0,**kwargs):
