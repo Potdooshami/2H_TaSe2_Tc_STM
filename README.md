@@ -33,5 +33,5 @@ The current codebase and data have become significantly vast and complex. This d
 3.1 [File System  ](2025-12-30_file_organize_manual.pdf)  
 3.2 [Timeline](Timeline.md)  
 3.3 [Commit prefix convention](commit_prefix_convention.md)  
-3.4 [Fig,draft version convetion
-](Figs_draft_version_convention.md)
+3.4 [Fig,draft version convetion](Figs_draft_version_convention.md)  
+3.5 [Notation of HC,AC,CC in references](docs/HC_notation.md)
