@@ -26,7 +26,7 @@ The current codebase and data have become significantly vast and complex. This d
 # 2. Key Findings
 2.1 Soliton Network  
 2.2 Normal-Incommensurate transition  
-3.3 Topological point defect
+3.3 Interplay between Pinning Defects and Commensurate Charge Density Waves
 
 
 # 3. Project Managing
