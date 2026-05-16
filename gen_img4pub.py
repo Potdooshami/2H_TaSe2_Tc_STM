@@ -17,6 +17,15 @@ for idt in range(len(df)):
 class imgen:
     phiPrinters = phiPrinters
     df = df
+    @classmethod
+    def dfphase(self):
+        ua = np.array([-1, 1])*np.pi
+        df = pd.DataFrame({
+            'arrfcn':[lambda x:x,gpm.wrap_phase,lambda x: gpm.wrap_phase(3*x)/3],
+            'cmap':['jet','twilight_shifted','RdBu'],
+            'clim':[ua*3,ua*(1),ua*(1/3)]
+        })
+        return df
     @staticmethod
     def topo(idt,cmap = 'afmhot'):
         img = imgen.df['arr_clns'][idt]
@@ -39,18 +48,19 @@ class imgen:
         vp.DVertexColoring(Info).show()
     @staticmethod
     def kmap(idt,ik,iflip):
-        ua = np.array([-1, 1])*np.pi
-        dfphase = pd.DataFrame({
-            'arrfcn':[lambda x:x,gpm.wrap_phase,lambda x: gpm.wrap_phase(3*x)/3],
-            'cmap':['jet','twilight_shifted','RdBu'],
-            'clim':[ua*3,ua*(1),ua*(1/3)]
-        })
+        # ua = np.array([-1, 1])*np.pi
+        # dfphase = pd.DataFrame({
+        #     'arrfcn':[lambda x:x,gpm.wrap_phase,lambda x: gpm.wrap_phase(3*x)/3],
+        #     'cmap':['jet','twilight_shifted','RdBu'],
+        #     'clim':[ua*3,ua*(1),ua*(1/3)]
+        # })
+        dfphase = imgen.dfphase()
         arrfcn = dfphase.iloc[iflip]['arrfcn']
         cmap = dfphase.iloc[iflip]['cmap']
-        clim = dfphase.iloc[iflip]['clim']
         arr = imgen.phiPrinters[idt].phase[ik]
         plt.imshow(arrfcn(arr),cmap=cmap)
         auto199()
+
 
 
 if __name__ == '__main__':
