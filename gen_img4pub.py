@@ -17,6 +17,15 @@ for idt in range(len(df)):
 class imgen:
     phiPrinters = phiPrinters
     df = df
+    _u = np.pi*(2/3)
+    @classmethod
+    def ordered_phis(self,idt,ik):
+        ik_permuteds = [1,0,2]
+        ik_permuted = ik_permuteds[ik]
+        phi = -imgen.phiPrinters[idt].phase[ik_permuted]
+        if ik == 0:
+            phi += imgen._u
+        return phi
     @classmethod
     def dfphase(self):
         ua = np.array([-1, 1])*np.pi
@@ -48,16 +57,10 @@ class imgen:
         vp.DVertexColoring(Info).show()
     @staticmethod
     def kmap(idt,ik,iflip):
-        # ua = np.array([-1, 1])*np.pi
-        # dfphase = pd.DataFrame({
-        #     'arrfcn':[lambda x:x,gpm.wrap_phase,lambda x: gpm.wrap_phase(3*x)/3],
-        #     'cmap':['jet','twilight_shifted','RdBu'],
-        #     'clim':[ua*3,ua*(1),ua*(1/3)]
-        # })
         dfphase = imgen.dfphase()
         arrfcn = dfphase.iloc[iflip]['arrfcn']
         cmap = dfphase.iloc[iflip]['cmap']
-        arr = imgen.phiPrinters[idt].phase[ik]
+        arr = imgen.ordered_phis(idt,ik)
         plt.imshow(arrfcn(arr),cmap=cmap)
         auto199()
 
