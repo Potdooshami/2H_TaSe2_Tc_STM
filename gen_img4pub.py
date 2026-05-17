@@ -43,7 +43,7 @@ class imgen:
     @staticmethod
     def domain(idt):
         Info = imgen.phiPrinters[idt].Info
-        phase = imgen.phiPrinters[idt].phase
+
         vp.DomainColoring(Info).show()
         
     @staticmethod
