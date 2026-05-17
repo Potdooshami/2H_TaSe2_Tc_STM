@@ -299,7 +299,8 @@ class Collection:
         index_range=(-10, 10),
         origin=(0, 0),
         color='black',
-        ax=None
+        ax=None,
+        lw=1        
     ):
         """
         Plot plane wave phase lines (k · r = c) for a 2D covector.
@@ -381,7 +382,8 @@ class Collection:
             line, = ax.plot(
                 [p1[0], p2[0]],
                 [p1[1], p2[1]],
-                color=line_color
+                color=line_color,
+                linewidth=lw
             )
 
             lines.append(line)
