@@ -1,0 +1,11 @@
+2Hvenv/
+__pycache__/
+.git/
+*.npy
+*.csv
+*.mat
+*.png
+*.pdf
+*.pkl
+*.pptx
+*.svg
