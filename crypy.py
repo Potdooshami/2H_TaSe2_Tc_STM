@@ -105,15 +105,13 @@ class PrimitiveVector2D(TrackedInstance):
         return self.get_super_structure(1/n1,1/n2)
     def get_wigner_seitz_vertices_2d(self) -> np.ndarray:
         """
-        주어진 2D 기저 벡터에 대한 비그너-자이츠 셀의 꼭짓점 좌표를 계산합니다.
+        Calculates the vertices of the Wigner-Seitz cell for given 2D basis vectors.
 
         Args:
-            basis_vectors (np.ndarray): 각 행이 기저 벡터인 2x2 numpy 배열.
-                                        예: np.array([[1, 0], [0, 1]])
+            basis_vectors (np.ndarray): 2x2 numpy array where each row is a basis vector.
 
         Returns:
-            np.ndarray: 비그너-자이츠 셀을 구성하는 꼭짓점들의 (x, y) 좌표가
-                        담긴 (N, 2) 형태의 numpy 배열. N은 꼭짓점의 개수입니다.
+            np.ndarray: (N, 2) numpy array containing (x, y) coordinates of the vertices.
         """
         basis_vectors = self.I_xy__a12.T
         if not isinstance(basis_vectors, np.ndarray) or basis_vectors.shape != (2, 2):
@@ -122,31 +120,27 @@ class PrimitiveVector2D(TrackedInstance):
         a1 = self.a1#basis_vectors[0]
         a2 = self.a2#basis_vectors[1]
 
-        # --- 1. 원점 주변의 격자점 생성 ---
-        # 비그너-자이츠 셀은 가장 가까운 이웃에 의해 결정되므로,
-        # 보통 원점 주변 5x5 격자점이면 충분합니다.
+        # --- 1. Generate lattice points around the origin ---
+        # 5x5 grid around origin is usually sufficient for Wigner-Seitz cell.
         lattice_points = np.array([n * a1 + m * a2 
                                 for n in range(-2, 3) 
                                 for m in range(-2, 3)])
 
-        # --- 2. 보로노이 다이어그램 계산 ---
+        # --- 2. Calculate Voronoi diagram ---
         vor = Voronoi(lattice_points)
 
-        # --- 3. 원점에 해당하는 셀의 꼭짓점 찾기 ---
-        # 격자점 배열에서 원점(0,0)의 인덱스를 찾습니다.
-        # 부동소수점 오차를 고려하여 np.isclose 사용
+        # --- 3. Find vertices of the cell corresponding to the origin ---
+        # Find index of origin (0,0) in lattice points array.
         origin_idx = np.where(np.all(np.isclose(lattice_points, [0, 0]), axis=1))[0][0]
         
-        # 원점에 해당하는 보로노이 영역(region)의 인덱스를 가져옵니다.
+        # Get index of the Voronoi region for the origin.
         region_idx = vor.point_region[origin_idx]
         
-        # 해당 영역을 구성하는 꼭짓점(vertex)들의 인덱스를 가져옵니다.
+        # Get indices of vertices forming that region.
         vertex_indices = vor.regions[region_idx]
         
-        # -1은 무한대를 의미하므로 유효한 꼭짓점만 필터링합니다.
+        # Filter valid vertices (-1 indicates infinity).
         if -1 in vertex_indices:            
-            # 일반적으로 가장자리 셀이 아니면 발생하지 않습니다.
-            # 혹시 모를 경우를 대비해 유효한 인덱스만 사용합니다.
             valid_indices = [i for i in vertex_indices if i != -1]
             return vor.vertices[valid_indices]
         return vor.vertices[vertex_indices]
@@ -196,34 +190,31 @@ class LatticePoints2D(TrackedInstance):
     @staticmethod
     def find_lattice_indices_in_rect(a1, a2, O, xmin, xmax, ymin, ymax):
         """
-        주어진 2D 격자에서 특정 직사각형 범위 내에 있는 모든 격자점의 인덱스를 찾습니다.
+        Finds indices of all lattice points within a specific rectangular range.
 
         Args:
-            a1 (tuple or np.ndarray): 첫 번째 기저 벡터 (ax1, ay1).
-            a2 (tuple or np.ndarray): 두 번째 기저 벡터 (ax2, ay2).
-            O (tuple or np.ndarray): 격자의 원점 (Ox, Oy).
-            xmin, xmax, ymin, ymax (float): 직사각형 경계.
+            a1 (tuple or np.ndarray): First basis vector.
+            a2 (tuple or np.ndarray): Second basis vector.
+            O (tuple or np.ndarray): Origin of the lattice.
+            xmin, xmax, ymin, ymax (float): Rectangular boundaries.
 
         Returns:
-            np.ndarray: 직사각형 내에 있는 모든 격자점의 (i, j) 인덱스가 담긴
-                        (N, 2) 형태의 numpy 배열. N은 점의 개수입니다.
+            np.ndarray: (N, 2) numpy array containing (i, j) indices.
         """
-        # 1. 벡터와 행렬 설정
+        # 1. Setup vectors and matrix
         a1 = np.array(a1, dtype=float)
         a2 = np.array(a2, dtype=float)
         O = np.array(O, dtype=float)
         
-        # 변환 행렬 M = [a1, a2] (a1, a2를 열벡터로 가짐)
+        # Transformation matrix M = [a1, a2]
         M = np.stack([a1, a2], axis=1)
         
-        # M이 역행렬을 가질 수 있는지 확인 (a1, a2가 평행하지 않은지)
         if np.abs(np.linalg.det(M)) < 1e-9:
             raise ValueError("기저 벡터 a1, a2가 서로 평행하여 2D 격자를 만들 수 없습니다.")
         
-        # 역변환 행렬
         M_inv = np.linalg.inv(M)
 
-        # 2. 직사각형의 네 꼭짓점을 정의
+        # 2. Define four corners of the rectangle
         corners_xy = np.array([
             [xmin, ymin],
             [xmax, ymin],
@@ -231,22 +222,18 @@ class LatticePoints2D(TrackedInstance):
             [xmin, ymax]
         ])
 
-        # 3. 네 꼭짓점을 격자 좌표계(i, j)로 변환
-        # (corner - O)를 계산해야 하므로 O를 각 corner에 맞게 브로드캐스팅
+        # 3. Transform corners to lattice coordinate system (i, j)
         corners_ij = M_inv @ (corners_xy - O).T
         
-        # 4. 변환된 좌표들로부터 i와 j의 탐색 범위를 결정
+        # 4. Determine search range for i and j
         i_min, j_min = np.floor(corners_ij.min(axis=1))
         i_max, j_max = np.ceil(corners_ij.max(axis=1))
         
-        # 5. 해당 범위 내의 모든 (i, j) 정수 쌍을 생성하고 검사
+        # 5. Generate and check all (i, j) pairs within range
         valid_indices = []
         for i in range(int(i_min), int(i_max) + 1):
             for j in range(int(j_min), int(j_max) + 1):
-                # (i, j)에 해당하는 실제 (x, y) 좌표 계산
                 point_xy = O + i * a1 + j * a2
-                
-                # 이 점이 실제로 직사각형 안에 있는지 최종 확인
                 if (xmin <= point_xy[0] <= xmax) and (ymin <= point_xy[1] <= ymax):
                     valid_indices.append([i, j])
                     
@@ -291,6 +278,21 @@ class Crystal2D(TrackedInstance):
         ax = plt.gca()
         ax.set_aspect('equal', adjustable='box')    
         return (f,ax)
+    def plot_summary(self):
+        fig,axs = plt.subplots(1,3,figsize=(12,4))
+        plt.sca(axs[0])
+        self._basis.primitive_vector.plot_all()
+        plt.sca(axs[1])
+        self._basis.primitive_vector.plot_all()
+        self._basis.plot_basis()
+        plt.sca(axs[2])
+        # self._basis.primitive_vector.plot_all()
+        self._lattice.plot_scatter(s=1)
+        print(self._basis.primitive_vector.a1)
+        print(self._basis.primitive_vector.a2)
+        print('------------------------------------')
+        print(self._basis.basis_df)
+        return (fig,axs)
 
 class Collection:
     def plot_plane_wave_lines(
@@ -444,6 +446,3 @@ if __name__ == "__main__":
     ax.set_xlim(-1,1)
     ax.set_ylim(-1,1)    
     plt.show()
-
-
-
