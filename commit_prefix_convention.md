@@ -5,6 +5,7 @@
 | DOCS     | Documentation only changes                                         | `which file`, which part                            |
 | REFACTOR | Changes that do not affect the meaning of the code                 | `which file`, which part                            |
 | ISSUE    | Report a bug or a feature request                                  | distinguish 1)bug 2)feature request 3)New Idea      |
+| ELSE     | ... feature                                                      | ...
 | data     | 1)Add rawdata, 2)change rawdata, 3)change data schema 4)cache data | `which file` source                                 |
 | prep     | Data preprocessing                                                 | `which file or schema`                              |
 | log_anal | Logic for analysis                                                 | `which file` which function                         |
