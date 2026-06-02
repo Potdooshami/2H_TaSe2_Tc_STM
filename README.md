@@ -35,4 +35,5 @@ The current codebase and data have become significantly vast and complex. This d
 3.3 [Commit prefix convention](commit_prefix_convention.md)  
 3.4 [Fig,draft version convetion](Figs_draft_version_convention.md)  
 3.5 [Notation of HC,AC,CC in references](docs/HC_notation.md)  
-3.6 [Convention of $\phi_1,\phi_2,\phi_3$](docs/convention_of_phi_and_basis.md)
+3.6 [Notation of $\phi_1,\phi_2,\phi_3$ and the lattice vectors](docs/convention_of_phi_and_basis.md)  
+3.7 [Notation of commutator](docs/commutator.md)
