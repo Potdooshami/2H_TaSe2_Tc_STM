@@ -1,1 +1,2 @@
 - All comments should be in English.
+- Any development helper tools, automation scripts, test frameworks, or validation codes created during development must be stored inside the `dev_tools/` directory, keeping them strictly separated from core business modules.
