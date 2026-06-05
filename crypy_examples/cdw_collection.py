@@ -128,7 +128,8 @@ def get_subtracted_patch():
             subtracted_path,
             linewidth=2,
             edgecolor='magenta',
-            facecolor='lightblue',
+            facecolor='white',
+            
             alpha=1,
             zorder=1000000,
             label='Square - Hexagon'
