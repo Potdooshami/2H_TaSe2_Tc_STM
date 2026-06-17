@@ -20,7 +20,7 @@ The current codebase and data have become significantly vast and complex. This d
 ⚠️ Warning: Attempting to decipher the file system manually without referring to this guide is a guaranteed waste of time. Read the docs first—your future self will thank you.
 # 1. Analytical Explorations
 1.1 [Understading spatial lock-in tequenique](z01_spatial_lockinTest.ipynb)  
-1.2 [Workflow of image processing](Diagram4Refactoring.png)  
+1.2 [Workflow of image processing](assets/Diagram4Refactoring.png)  
 1.3 [Phase map extraction process using actual data](docs/overallprocess.md)  
 1.4 [Temperature dependency:(1)Topography , (2)FFT , (3)Autocorrelation , (4)Phase map](docs/ICCDW_transition/index.md)
 # 2. Key Findings
@@ -30,10 +30,10 @@ The current codebase and data have become significantly vast and complex. This d
 
 
 # 3. Project Managing
-3.1 [File System  ](2025-12-30_file_organize_manual.pdf)  
-3.2 [Timeline](Timeline.md)  
-3.3 [Commit prefix convention](commit_prefix_convention.md)  
-3.4 [Fig,draft version convetion](Figs_draft_version_convention.md)  
+3.1 [File System  ](docs/2025-12-30_file_organize_manual.pdf)  
+3.2 [Timeline](docs/Timeline.md)  
+3.3 [Commit prefix convention](docs/commit_prefix_convention.md)  
+3.4 [Fig,draft version convetion](docs/Figs_draft_version_convention.md)  
 3.5 [Notation of HC,AC,CC in references](docs/HC_notation.md)  
 3.6 [Notation of $\phi_1,\phi_2,\phi_3$ and the lattice vectors](docs/convention_of_phi_and_basis.md)  
 3.7 [Notation of commutator](docs/commutator.md)
