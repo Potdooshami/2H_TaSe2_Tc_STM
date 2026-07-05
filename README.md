@@ -30,10 +30,11 @@ The current codebase and data have become significantly vast and complex. This d
 
 
 # 3. Project Managing
-3.1 [File System  ](docs/2025-12-30_file_organize_manual.pdf)  
-3.2 [Timeline](docs/Timeline.md)  
+3.1 [Raw data dependency](docs/2025-12-30_file_organize_manual.pdf)  
+3.2 [Project Timeline](docs/Timeline.md)  
 3.3 [Commit prefix convention](docs/commit_prefix_convention.md)  
 3.4 [Fig,draft version convetion](docs/Figs_draft_version_convention.md)  
 3.5 [Notation of HC,AC,CC in references](docs/HC_notation.md)  
 3.6 [Notation of $\phi_1,\phi_2,\phi_3$ and the lattice vectors](docs/convention_of_phi_and_basis.md)  
-3.7 [Notation of commutator](docs/commutator.md)
+3.7 [Notation of commutator](docs/commutator.md)  
+3.8 [Chronological Guide to Jupyter Notebooks](docs/notebooks_guide.md)
