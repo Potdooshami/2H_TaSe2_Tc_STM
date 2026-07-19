@@ -67,7 +67,9 @@ class imgen:
     def dw(idt):
         Info = imgen.phiPrinters[idt].Info
         phase = imgen.phiPrinters[idt].phase
-        vp.DWallColoring(Info,phase).show()
+        DWallColoring = vp.DWallColoring(Info,phase)
+        DWallColoring.show()
+        return DWallColoring
     @staticmethod
     def vertex(idt):
         Info = imgen.phiPrinters[idt].Info
