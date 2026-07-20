@@ -57,6 +57,8 @@ class imgen:
         img = imgen.df['arr_clns'][idt]
         plt.imshow(img,cmap=cmap)
         auto199()
+        ax = plt.gca()
+        return ax
     @staticmethod
     def domain(idt):
         Info = imgen.phiPrinters[idt].Info
