@@ -1,4 +1,4 @@
-# Jupyter Notebooks Chronological Guide
+4# Jupyter Notebooks Chronological Guide
 
 This guide provides a high-level summary of the Jupyter Notebooks indexed from **A** to **E** in this repository. The indexing follows the chronological timeline of the scanning tunneling microscopy (STM) research project on $2H$-TaSe$_2$.
 
@@ -9,4 +9,5 @@ This guide provides a high-level summary of the Jupyter Notebooks indexed from *
 | **Group C**<br>(C01–C06) | 2026.01.01 – 2026.02.28 | ICDW project(figurization) |
 | **Group D**<br>(D01–D06) | 2026.02.01 – 2026.05.31 | DWN project(main) |
 | **Group E**<br>(E01–E08) | 2026.05.01 – 2026.06.30 | DWN project(supp) |
-| **Group F**<br>(F01–) | 2026.07.01 –  | ICDW project(main) |
+| **Group F**<br>(F01–F03) | 2026.07.01 – 2026.07.31 | ICDW project(main-holding) |
+| **Group G**<br>(G01–) | 2026.08.01 –  | DWN project(rebuttal) |
