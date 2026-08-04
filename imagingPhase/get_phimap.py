@@ -37,13 +37,27 @@ def generate_sine_wave_from_k(k_value,  arr_shape,phi=0):
 
   return sine_wave
 
-def kdisplacementmap(arr,k,sig):
-  sw = generate_sine_wave_from_k(k,  arr.shape,0)
-  cw = generate_sine_wave_from_k(k,  arr.shape,np.pi/2)
-  sprod = gaussian_filter(sw*arr,sig)
-  cprod = gaussian_filter(cw*arr,sig)
-  xprod = cprod +sprod*1j
+def kdisplacementmap(arr, k, sig):
+  """
+  Calculates the lock-in complex displacement map (xprod) for a given k-vector and Gaussian smoothing sigma.
+
+  Args:
+    arr (np.ndarray): 2D array representing the real-space image.
+    k (sequence): 2-element sequence (ky, kx) representing the target k-vector in pixel units from FFT center.
+    sig (float): Gaussian filter standard deviation (sigma) for lock-in smoothing.
+
+  Returns:
+    np.ndarray: 2D complex array (cprod + 1j * sprod) representing the displacement phase map.
+  """
+  sw = generate_sine_wave_from_k(k, arr.shape, 0)
+  cw = generate_sine_wave_from_k(k, arr.shape, np.pi/2)
+  sprod = gaussian_filter(sw * arr, sig)
+  cprod = gaussian_filter(cw * arr, sig)
+  xprod = cprod + sprod * 1j
   return xprod
+
+# Backward compatibility alias for legacy code/notebooks using typo 'kdispacementmap'
+kdispacementmap = kdisplacementmap
 
 
 

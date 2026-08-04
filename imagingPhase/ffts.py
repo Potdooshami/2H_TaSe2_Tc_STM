@@ -10,28 +10,42 @@ def get_magnitude_spectrum(arr_cln):
   magnitude_spectrum = np.abs(fft_result_shifted)
   return magnitude_spectrum
 
-def fft2show(arr_cln,vmin,vmax):
+def fft2show(arr_cln, vmin=None, vmax=None):
   fft_result = fft2(arr_cln)
   fft_result_shifted = fftshift(fft_result)
   magnitude_spectrum = np.abs(fft_result_shifted)
   plt.figure(figsize=(10, 10))
   plt.imshow(magnitude_spectrum, cmap='gray', vmin=vmin, vmax=vmax)
   plt.title('Magnitude Spectrum of 2D FFT')
-  return  magnitude_spectrum
+  return magnitude_spectrum
 
-def fft2pkfnd(fft2abs,threshold,choose):
-  coordinates = peak_local_max(fft2abs, min_distance=100, threshold_abs = threshold)
-  plt.scatter(coordinates[:, 1], coordinates[:, 0], s=50, facecolors='none', edgecolors='r')
-  for ipeak in range(coordinates.shape[0]):
-    plt.text(coordinates[ipeak,1],coordinates[ipeak,0],str(ipeak), color='g')
-  coordinates_choose = coordinates[choose,:]
-  print(coordinates_choose)
-  print(coordinates_choose.shape[0])
-  for ipeak in range(coordinates_choose.shape[0]):
-    plt.text(coordinates_choose[ipeak,1],coordinates_choose[ipeak,0],str(ipeak), color='b',size= 20)
-    pk_all = coordinates - (np.array(fft2abs.shape)/2)
-    pk_choose = pk_all[choose,:]
-  return pk_choose,pk_all
+def fft2pkfnd(fft2abs, threshold, choose=None):
+  coordinates = peak_local_max(fft2abs, min_distance=100, threshold_abs=threshold)
+  
+  if len(coordinates) > 0:
+    plt.scatter(coordinates[:, 1], coordinates[:, 0], s=50, facecolors='none', edgecolors='r')
+    for ipeak in range(coordinates.shape[0]):
+      plt.text(coordinates[ipeak, 1], coordinates[ipeak, 0], str(ipeak), color='g')
+  
+  pk_all = coordinates - (np.array(fft2abs.shape) / 2) if len(coordinates) > 0 else np.empty((0, 2))
+  
+  if choose is not None and len(coordinates) > 0:
+    choose_idx = [choose] if np.isscalar(choose) else choose
+    coordinates_choose = coordinates[choose_idx, :]
+    if coordinates_choose.ndim == 1:
+      coordinates_choose = np.atleast_2d(coordinates_choose)
+    
+    print(coordinates_choose)
+    print(coordinates_choose.shape[0])
+    
+    for ipeak in range(coordinates_choose.shape[0]):
+      plt.text(coordinates_choose[ipeak, 1], coordinates_choose[ipeak, 0], str(ipeak), color='b', size=20)
+    
+    pk_choose = pk_all[choose_idx, :]
+  else:
+    pk_choose = pk_all
+    
+  return pk_choose, pk_all
 
 def get_line_profile(img, p1, p2, num_points):
     """
