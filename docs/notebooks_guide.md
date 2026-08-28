@@ -10,4 +10,5 @@ This guide provides a high-level summary of the Jupyter Notebooks indexed from *
 | **Group D**<br>(D01–D06) | 2026.02.01 – 2026.05.31 | DWN project(main) |
 | **Group E**<br>(E01–E08) | 2026.05.01 – 2026.06.30 | DWN project(supp) |
 | **Group F**<br>(F01–F03) | 2026.07.01 – 2026.07.31 | ICDW project(main-holding) |
-| **Group G**<br>(G01–) | 2026.08.01 –  | DWN project(rebuttal) |
+| **Group G**<br>(G01–G02) | 2026.08.1 – 2026.08.28 | DWN project(rebuttal) |
+| **Group H**<br>(H01–) | 2026.08.01 –  | ICDW unhold |
