@@ -57,5 +57,13 @@ def load_C05(pa=pa,df=df):
     df['phase'] = p
     df = df.iloc[idx_final]
     return df
+def load_H03(pa=pa,df=df):    
+    idx_final = [0,6,7,5,3,1]
+    p = pa[0]
+    for idt in range(len(p)):
+        p[idt][0], p[idt][1] = p[idt][1], p[idt][0]
+    df['phase'] = p
+    df = df.iloc[idx_final]
+    return df
 
 
