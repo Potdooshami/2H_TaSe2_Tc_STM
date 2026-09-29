@@ -4,7 +4,7 @@ from imagingPhase import visPhase as vp
 import pandas as pd
 import imagingPhase.get_phimap as gpm
 import numpy as np
-from data_struct import df,pa  
+from loader import df,pa
 phiPrinters = []    
 for idt in range(len(df)):
     print(idt)
