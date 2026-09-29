@@ -19,8 +19,8 @@ def fft2show(arr_cln, vmin=None, vmax=None):
   plt.title('Magnitude Spectrum of 2D FFT')
   return magnitude_spectrum
 
-def fft2pkfnd(fft2abs, threshold, choose=None):
-  coordinates = peak_local_max(fft2abs, min_distance=100, threshold_abs=threshold)
+def fft2pkfnd(fft2abs, threshold, choose=None,min_distance = 100):
+  coordinates = peak_local_max(fft2abs, min_distance=min_distance, threshold_abs=threshold)
   
   if len(coordinates) > 0:
     plt.scatter(coordinates[:, 1], coordinates[:, 0], s=50, facecolors='none', edgecolors='r')
