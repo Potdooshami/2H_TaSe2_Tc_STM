@@ -22,9 +22,19 @@ new_dt = {'fns':'110K_highres',
     'sz':1024,
     'pxl20nm':512,
     'k123':pk_choose}
+pa[0].append(angle_restores)    
 df = pd.concat([df, pd.DataFrame([new_dt])], ignore_index=True)
-
-pa[0].append(angle_restores)
+def from_H012():
+    with open('dataCache/h01.pkl','rb') as f:
+        dt_h01 = pickle.load(f)
+    with open('dataCache/h02.pkl','rb') as f:
+        dt_h02 = pickle.load(f)
+    df = pd.DataFrame([dt_h01,dt_h02])
+    return df
+df_h = from_H012()
+df = pd.concat([df, df_h], ignore_index=True,join='inner')
+pa[0].append(df_h['phase'][0])
+pa[0].append(df_h['phase'][1])
 
 # phase correcting---------------------------------------------------------------
 phi1 = -2.8
@@ -47,3 +57,5 @@ def load_C05(pa=pa,df=df):
     df['phase'] = p
     df = df.iloc[idx_final]
     return df
+
+
