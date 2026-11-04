@@ -17,6 +17,7 @@ xx.py
 xx.py
 *.pyc
 *.svg
+*.gif
 testmpl.py
 pa.pkl
 __pycache__/useful.cpython-312.pyc
